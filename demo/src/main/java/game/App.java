@@ -4,16 +4,17 @@ import java.io.IOException;
 
 import game.classes.entities.Player;
 import game.classes.maps.CreateMap;
+import game.classes.maps.MapPool;
 import game.classes.movement.MovementControlPlayer;
+import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import game.classes.maps.MapPool;
-import javafx.animation.AnimationTimer;
 /**
  * JavaFX App
  */
@@ -31,8 +32,16 @@ public class App extends Application {
         Image sprite = new Image(App.class.getResourceAsStream("assets/knight.png"));
         Player player = new Player(100, 0, 0, sprite);
 
+
         root.getChildren().add(map.CreateCanva());
-        implementPlayer(player, map);
+        MovementControlPlayer mvnt = implementPlayer(player, map);
+        Text text = new Text();
+
+        text.setX(1700); 
+        text.setY(50);
+        root.getChildren().add(text);
+                
+ 
         stage.setScene(scene);
 
         stage.show();
@@ -44,6 +53,7 @@ public class App extends Application {
             public void handle(long now) {
                 double pos_x = player.getX_pos();
                 double pos_y = player.getY_pos();
+                text.setText(String.format("Speed = %.1f", mvnt.getSpeed()));
 
                 boolean playerOnDoor = map.isDoor(pos_x, pos_y);
                 boolean playerOnPreviousDoor = map.isPreviousDoor(pos_x, pos_y);
@@ -72,10 +82,11 @@ public class App extends Application {
     }
 
     //Put implementPlayer in another file
-    public void implementPlayer(Player player, CreateMap map) throws IOException {
+    public MovementControlPlayer implementPlayer(Player player, CreateMap map) throws IOException {
         MovementControlPlayer inputControl = new MovementControlPlayer(player, scene, map);
         inputControl.handleInput();
         root.getChildren().add(player.getImageView());
+        return inputControl;
     }
 
     static void setRoot(String fxml) throws IOException {
