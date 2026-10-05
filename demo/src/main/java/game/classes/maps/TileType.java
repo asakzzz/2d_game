@@ -1,8 +1,19 @@
 package game.classes.maps;
 
 public enum TileType {
-    FLOOR,
-    WALL,
-    DOOR,
-    PREVIOUS_DOOR
+
+    GROUND(0),
+    WALL(1),
+    DOOR(2),
+    PREVIOUS_DOOR(3);
+
+    private final int id;
+
+    TileType(int id) {
+        this.id = id;
+    }
+
+    public int getId() {
+        return id;
+    }
 }
