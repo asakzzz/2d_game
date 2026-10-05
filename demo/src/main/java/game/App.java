@@ -14,7 +14,6 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import game.classes.maps.MapPool;
 import javafx.animation.AnimationTimer;
-
 /**
  * JavaFX App
  */
@@ -29,13 +28,13 @@ public class App extends Application {
         scene = new Scene(root, 1280, 720);
         CreateMap map = new CreateMap();
         MapPool pool = new MapPool();
-        Image sprite = new Image(App.class.getResourceAsStream("assets/coin.png"));
+        Image sprite = new Image(App.class.getResourceAsStream("assets/knight.png"));
         Player player = new Player(100, 0, 0, sprite);
 
         root.getChildren().add(map.CreateCanva());
         implementPlayer(player, map);
-
         stage.setScene(scene);
+
         stage.show();
 
         new AnimationTimer() {
