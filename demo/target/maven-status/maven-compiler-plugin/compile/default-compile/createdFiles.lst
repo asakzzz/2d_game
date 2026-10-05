@@ -1,0 +1,8 @@
+game/classes/entities/Entity.class
+game/classes/items/Item.class
+game/App.class
+module-info.class
+game/classes/userInput/MovementInputControl$1.class
+game/classes/userInput/MovementInputControl.class
+game/classes/entities/Player.class
+game/classes/inventory/Inventory.class
