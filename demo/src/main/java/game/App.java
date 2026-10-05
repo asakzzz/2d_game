@@ -30,7 +30,7 @@ public class App extends Application {
         scene = new Scene(root, 1280, 720);
         CreateMap map = new CreateMap();
         MapPool pool = new MapPool();
-        Image sheet = new Image(App.class.getResourceAsStream("assets/grid-8x8.png"));
+        Image sheet = new Image(App.class.getResourceAsStream("assets/knight.png"));
         Image sprite = ImageReading.getFrame(sheet , 0,0,32,32);
         Player player = new Player(100, 0, 0, sprite);
 
