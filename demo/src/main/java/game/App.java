@@ -6,6 +6,7 @@ import game.classes.entities.Player;
 import game.classes.maps.CreateMap;
 import game.classes.maps.MapPool;
 import game.classes.movement.MovementControlPlayer;
+import game.classes.sprites.ImageReading;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -29,7 +30,8 @@ public class App extends Application {
         scene = new Scene(root, 1280, 720);
         CreateMap map = new CreateMap();
         MapPool pool = new MapPool();
-        Image sprite = new Image(App.class.getResourceAsStream("assets/knight.png"));
+        Image sheet = new Image(App.class.getResourceAsStream("assets/grid-8x8.png"));
+        Image sprite = ImageReading.getFrame(sheet , 0,0,32,32);
         Player player = new Player(100, 0, 0, sprite);
 
 

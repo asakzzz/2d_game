@@ -111,7 +111,6 @@ public class MovementControlPlayer {
     }
 
     public double getSpeed() {
-        // total speed regardless of direction
         return Math.hypot(horizontalSpeed, verticalSpeed);
     }
 
