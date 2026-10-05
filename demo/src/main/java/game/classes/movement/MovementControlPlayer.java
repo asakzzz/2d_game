@@ -55,6 +55,14 @@ public class MovementControlPlayer {
             @Override
             public void handle(long now) {
 
+                if (!keys.contains(KeyCode.D) && !keys.contains(KeyCode.Q)) {
+                    horizontalSpeed = 0;
+                }
+
+                if (!keys.contains(KeyCode.Z) && !keys.contains(KeyCode.S)) {
+                    verticalSpeed = 0;
+                }
+
                 if (keys.contains(KeyCode.D) && map.isWall(player.getX_pos() + 10, player.getY_pos()) == false) {
                     if (horizontalSpeed >= maxSpeed) {
                         player.setX_pos(player.getX_pos() + maxSpeed);
@@ -65,7 +73,6 @@ public class MovementControlPlayer {
                     }
 
                 }
-
                 if (keys.contains(KeyCode.Q) && map.isWall(player.getX_pos() - 10, player.getY_pos()) == false) {
                     if (horizontalSpeed >= maxSpeed) {
                         player.setX_pos(player.getX_pos() - maxSpeed);
@@ -93,16 +100,19 @@ public class MovementControlPlayer {
                     }
                 }
 
+                double total = horizontalSpeed + verticalSpeed;
+                if (total > maxSpeed) {
+                    horizontalSpeed = 4;
+                    verticalSpeed = 4;
+                }
 
             }
         }.start();
     }
 
-public double getSpeed() {
-    // total speed regardless of direction
-    return Math.hypot(horizontalSpeed, verticalSpeed);
-}
-
-    
+    public double getSpeed() {
+        // total speed regardless of direction
+        return Math.hypot(horizontalSpeed, verticalSpeed);
+    }
 
 }
