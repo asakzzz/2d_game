@@ -19,6 +19,10 @@ public class MovementControlPlayer {
     private final Scene scene;
     private final Set<KeyCode> keys = new HashSet<>();
     private final CreateMap map;
+    private int horizontalSpeed = 0;
+    private int verticalSpeed = 0;
+    private final int ACCEL = 1;
+    private final int maxSpeed = 6;
 
     /**
      * This creates the class MovementInputControls, which we will call later to
@@ -38,7 +42,10 @@ public class MovementControlPlayer {
      * which are pressed/released We then create a timer with
      * {@code AnimationTimer}, allowing us to move diagonally and overall
      * smoothly This timer updates every 1/60 second, basically each frame
-     * Depending on the key pressed and if there is a wall in front of it, we move the player accordingly
+     * Depending on the key pressed and if there is a wall in front of it, we
+     * move the player. The movement is made by the {@code maxSpeed} and the
+     * {@code ACCEL} params the ACCEL make the player move faster and faster,
+     * the maxSpeed caps it to avoid goind mach 20
      */
     public void handleInput() {
         scene.setOnKeyPressed(KeyEvent -> keys.add(KeyEvent.getCode()));
@@ -48,24 +55,53 @@ public class MovementControlPlayer {
             @Override
             public void handle(long now) {
 
-                
                 if (keys.contains(KeyCode.D) && map.isWall(player.getX_pos() + 10, player.getY_pos()) == false) {
-                    player.setX_pos(player.getX_pos() + 6);
+                    if (horizontalSpeed >= maxSpeed) {
+                        player.setX_pos(player.getX_pos() + maxSpeed);
+                    } else {
+                        horizontalSpeed += ACCEL;
+                        player.setX_pos(player.getX_pos() + horizontalSpeed);
+
+                    }
+
                 }
 
                 if (keys.contains(KeyCode.Q) && map.isWall(player.getX_pos() - 10, player.getY_pos()) == false) {
-                    player.setX_pos(player.getX_pos() - 6);
+                    if (horizontalSpeed >= maxSpeed) {
+                        player.setX_pos(player.getX_pos() - maxSpeed);
+                    } else {
+                        horizontalSpeed += ACCEL;
+                        player.setX_pos(player.getX_pos() - horizontalSpeed);
+                    }
                 }
 
                 if (keys.contains(KeyCode.Z) && map.isWall(player.getX_pos(), player.getY_pos() - 10) == false) {
-                    player.setY_pos(player.getY_pos() - 6);
+                    if (verticalSpeed >= maxSpeed) {
+                        player.setY_pos(player.getY_pos() - maxSpeed);
+                    } else {
+                        verticalSpeed += ACCEL;
+                        player.setY_pos(player.getY_pos() - verticalSpeed);
+                    }
                 }
 
                 if (keys.contains(KeyCode.S) && map.isWall(player.getX_pos(), player.getY_pos() + 10) == false) {
-                    player.setY_pos(player.getY_pos() + 6);
+                    if (verticalSpeed >= maxSpeed) {
+                        player.setY_pos(player.getY_pos() + maxSpeed);
+                    } else {
+                        verticalSpeed += ACCEL;
+                        player.setY_pos(player.getY_pos() + verticalSpeed);
+                    }
                 }
+
             }
         }.start();
     }
+
+public double getSpeed() {
+    // total speed regardless of direction
+    return Math.hypot(horizontalSpeed, verticalSpeed);
+}
+
+    
 
 }
