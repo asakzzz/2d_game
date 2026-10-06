@@ -141,10 +141,10 @@ public class CreateMap {
         double right = x + width - 0.001;
         double bottom = y + height - 0.001;
 
-        boolean topLeft = isWall(x, y);
-        boolean topRight = isWall(right, y);
-        boolean bottomLeft = isWall(x, bottom);
-        boolean bottomRight = isWall(right, bottom);
+        boolean topLeft = isDoor(x, y);
+        boolean topRight = isDoor(right, y);
+        boolean bottomLeft = isDoor(x, bottom);
+        boolean bottomRight = isDoor(right, bottom);
 
         return topLeft || topRight || bottomLeft || bottomRight;
     }
@@ -169,10 +169,10 @@ public class CreateMap {
         double right = x + width - 0.003;
         double bottom = y + height - 0.003;
 
-        boolean topLeft = isWall(x, y);
-        boolean topRight = isWall(right, y);
-        boolean bottomLeft = isWall(x, bottom);
-        boolean bottomRight = isWall(right, bottom);
+        boolean topLeft = isPreviousDoor(x, y);
+        boolean topRight = isPreviousDoor(right, y);
+        boolean bottomLeft = isPreviousDoor(x, bottom);
+        boolean bottomRight = isPreviousDoor(right, bottom);
 
         return topLeft || topRight || bottomLeft || bottomRight;
     }
