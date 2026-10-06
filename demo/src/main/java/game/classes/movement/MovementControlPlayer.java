@@ -1,13 +1,13 @@
 package game.classes.movement;
 
-import game.classes.entities.Player;
-import javafx.scene.Scene;
-import javafx.scene.input.KeyCode;
-import javafx.animation.AnimationTimer;
-import game.classes.maps.CreateMap;
-
 import java.util.HashSet;
 import java.util.Set;
+
+import game.classes.entities.Player;
+import game.classes.maps.CreateMap;
+import javafx.animation.AnimationTimer;
+import javafx.scene.Scene;
+import javafx.scene.input.KeyCode;
 
 /**
  *
@@ -66,6 +66,7 @@ public class MovementControlPlayer {
                 if (keys.contains(KeyCode.D) && map.isWall(player.getX_pos() + 10, player.getY_pos()) == false) {
                     if (horizontalSpeed >= maxSpeed) {
                         player.setX_pos(player.getX_pos() + maxSpeed);
+                        player.setFacingRight(true);
                     } else {
                         horizontalSpeed += ACCEL;
                         player.setX_pos(player.getX_pos() + horizontalSpeed);
@@ -76,6 +77,7 @@ public class MovementControlPlayer {
                 if (keys.contains(KeyCode.Q) && map.isWall(player.getX_pos() - 10, player.getY_pos()) == false) {
                     if (horizontalSpeed >= maxSpeed) {
                         player.setX_pos(player.getX_pos() - maxSpeed);
+                        player.setFacingLeft(true);
                     } else {
                         horizontalSpeed += ACCEL;
                         player.setX_pos(player.getX_pos() - horizontalSpeed);

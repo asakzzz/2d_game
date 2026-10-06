@@ -19,6 +19,8 @@ public abstract class Entity {
     ImageView imageView;
     protected double x_pos;
     protected double y_pos;
+    protected boolean facingLeft;
+    protected boolean facingRight;
 
     /**
      * Constructs a new {@code Entity} with three parameters {@code hp, def} and
@@ -126,6 +128,26 @@ public abstract class Entity {
      */
     public double getY_pos() {
         return y_pos;
+    }
+
+    public void setFacingLeft(boolean left) {
+        this.facingLeft = left;
+        imageView.setScaleX(-1);
+        this.facingRight = false;
+    }
+
+    public boolean isFacingLeft() {
+        return facingLeft;
+    }
+
+    public void setFacingRight(boolean right) {
+        this.facingRight = right;
+        imageView.setScaleX(1);
+        this.facingLeft = false;
+    }
+
+    public boolean isFacingRight() {
+        return facingRight;
     }
 
 }

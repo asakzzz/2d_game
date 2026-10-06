@@ -73,11 +73,15 @@ public class App extends Application {
                 boolean playerOnDoor = map.isDoor(pos_x, pos_y);
                 boolean playerOnPreviousDoor = map.isPreviousDoor(pos_x, pos_y);
 
+                //can make a file outta this
+
                 if (mvnt.isMoving()) {
                     animation.animate(player, framesRunning, now);
                 } else {
                     animation.animate(player, framesIdle , now);
                 }
+
+                //can make another file outta this
 
                 if (playerOnDoor == false && playerOnPreviousDoor == false) {
                     changed = true;
@@ -87,7 +91,6 @@ public class App extends Application {
                     return;
                 }
 
-                //need to make the player go to the next room instead of random one when going back to previous room
                 if (playerOnDoor) {
                     changed = false;
                     map.loadTIles(pool.getRandomMap());
