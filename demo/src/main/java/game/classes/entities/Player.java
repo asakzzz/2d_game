@@ -18,4 +18,10 @@ public class Player extends Entity {
     public Player(int Hp, int Def, int Mana , Image image) {
         super(100, 0, 50 , image);
     }
+
+
+    public void setImage(Image image) {
+        this.image = image;
+        this.imageView.setImage(image);
+    }
 }
