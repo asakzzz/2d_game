@@ -37,13 +37,15 @@ public class App extends Application {
         Image sprite = ImageReading.getFrame(sheet, 0, 0, 32, 32);
         Player player = new Player(100, 0, 0, sprite);
 
+        //initialize player in another file
+
         root.getChildren().add(map.CreateCanva());
         MovementControlPlayer mvnt = implementPlayer(player, map);
 
         AnimateSprite animation = new AnimateSprite(8);
         ImageReading imageReading = new ImageReading();
         Image[] framesRunning = imageReading.getAnimation(sheet, 0, 2, 8, 32, 32);
-        Image [] framesIdle = imageReading.getAnimation(sheet, 0, 0, 4, 32, 32);
+        Image[] framesIdle = imageReading.getAnimation(sheet, 0, 0, 4, 32, 32);
 
         Text text = new Text();
         Text text2 = new Text();
@@ -74,15 +76,13 @@ public class App extends Application {
                 boolean playerOnPreviousDoor = map.isPreviousDoor(pos_x, pos_y);
 
                 //can make a file outta this
-
                 if (mvnt.isMoving()) {
                     animation.animate(player, framesRunning, now);
                 } else {
-                    animation.animate(player, framesIdle , now);
+                    animation.animate(player, framesIdle, now);
                 }
 
                 //can make another file outta this
-
                 if (playerOnDoor == false && playerOnPreviousDoor == false) {
                     changed = true;
                     return;
@@ -110,8 +110,8 @@ public class App extends Application {
         MovementControlPlayer inputControl = new MovementControlPlayer(player, scene, map);
         inputControl.handleInput();
         ImageView view = player.getImageView();
-        view.setFitWidth(64);          // 2x
-        view.setPreserveRatio(true);   // height follows automatically
+        view.setFitWidth(64);          
+        view.setPreserveRatio(true);   
         root.getChildren().add(player.getImageView());
         return inputControl;
     }

@@ -130,22 +130,38 @@ public abstract class Entity {
         return y_pos;
     }
 
+    /**
+     *
+     * @param left A boolean, if the entity faces left true, false otherwise
+     */
     public void setFacingLeft(boolean left) {
         this.facingLeft = left;
         imageView.setScaleX(-1);
         this.facingRight = false;
     }
 
+    /**
+     *
+     * @return Returns true if the entity is facing left, right otherwise
+     */
     public boolean isFacingLeft() {
         return facingLeft;
     }
 
+    /**
+     *
+     * @param right A boolean , if the entity faces left right, false otherwise
+     */
     public void setFacingRight(boolean right) {
         this.facingRight = right;
         imageView.setScaleX(1);
         this.facingLeft = false;
     }
 
+    /**
+     *
+     * @return Returns true if the entity is facing right , false otherwise
+     */
     public boolean isFacingRight() {
         return facingRight;
     }
