@@ -19,10 +19,10 @@ public class MovementControlPlayer {
     private final Scene scene;
     private final Set<KeyCode> keys = new HashSet<>();
     private final CreateMap map;
-    private int horizontalSpeed = 0;
-    private int verticalSpeed = 0;
-    private final int ACCEL = 1;
-    private final int maxSpeed = 6;
+    private double horizontalSpeed = 0;
+    private double verticalSpeed = 0;
+    private final double ACCEL = 1;
+    private final double maxSpeed = 6;
 
     /**
      * This creates the class MovementInputControls, which we will call later to
@@ -110,8 +110,21 @@ public class MovementControlPlayer {
         }.start();
     }
 
+    /**
+     *
+     * @return a double, the total speed of the player
+     */
     public double getSpeed() {
         return Math.hypot(horizontalSpeed, verticalSpeed);
+    }
+
+    /**
+     *
+     * @return a boolean, checking if the player is moving or not
+     */
+    public boolean isMoving() {
+
+        return this.getSpeed() > 0;
     }
 
 }

@@ -6,6 +6,7 @@ import game.classes.entities.Player;
 import game.classes.maps.CreateMap;
 import game.classes.maps.MapPool;
 import game.classes.movement.MovementControlPlayer;
+import game.classes.sprites.AnimateSprite;
 import game.classes.sprites.ImageReading;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
@@ -13,9 +14,11 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+
 /**
  * JavaFX App
  */
@@ -31,19 +34,28 @@ public class App extends Application {
         CreateMap map = new CreateMap();
         MapPool pool = new MapPool();
         Image sheet = new Image(App.class.getResourceAsStream("assets/knight.png"));
-        Image sprite = ImageReading.getFrame(sheet , 0,0,32,32);
+        Image sprite = ImageReading.getFrame(sheet, 0, 0, 32, 32);
         Player player = new Player(100, 0, 0, sprite);
-
 
         root.getChildren().add(map.CreateCanva());
         MovementControlPlayer mvnt = implementPlayer(player, map);
-        Text text = new Text();
 
-        text.setX(1700); 
+        AnimateSprite animation = new AnimateSprite(8);
+        ImageReading imageReading = new ImageReading();
+        Image[] framesRunning = imageReading.getAnimation(sheet, 0, 2, 8, 32, 32);
+        Image [] framesIdle = imageReading.getAnimation(sheet, 0, 0, 4, 32, 32);
+
+        Text text = new Text();
+        Text text2 = new Text();
+
+        text.setX(1700);
         text.setY(50);
         root.getChildren().add(text);
-                
- 
+
+        text2.setX(1700);
+        text2.setY(80);
+        root.getChildren().add(text2);
+
         stage.setScene(scene);
 
         stage.show();
@@ -56,9 +68,16 @@ public class App extends Application {
                 double pos_x = player.getX_pos();
                 double pos_y = player.getY_pos();
                 text.setText(String.format("Speed = %.1f", mvnt.getSpeed()));
+                text2.setText(String.format("isMoving = " + mvnt.isMoving()));
 
                 boolean playerOnDoor = map.isDoor(pos_x, pos_y);
                 boolean playerOnPreviousDoor = map.isPreviousDoor(pos_x, pos_y);
+
+                if (mvnt.isMoving()) {
+                    animation.animate(player, framesRunning, now);
+                } else {
+                    animation.animate(player, framesIdle , now);
+                }
 
                 if (playerOnDoor == false && playerOnPreviousDoor == false) {
                     changed = true;
@@ -87,6 +106,9 @@ public class App extends Application {
     public MovementControlPlayer implementPlayer(Player player, CreateMap map) throws IOException {
         MovementControlPlayer inputControl = new MovementControlPlayer(player, scene, map);
         inputControl.handleInput();
+        ImageView view = player.getImageView();
+        view.setFitWidth(64);          // 2x
+        view.setPreserveRatio(true);   // height follows automatically
         root.getChildren().add(player.getImageView());
         return inputControl;
     }

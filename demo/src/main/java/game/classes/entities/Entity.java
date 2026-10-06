@@ -17,8 +17,8 @@ public abstract class Entity {
     protected Inventory inventory;
     protected Image image;
     ImageView imageView;
-    protected int x_pos;
-    protected int y_pos;
+    protected double x_pos;
+    protected double y_pos;
 
     /**
      * Constructs a new {@code Entity} with three parameters {@code hp, def} and
@@ -89,7 +89,7 @@ public abstract class Entity {
      *
      * @param x_pos The horizontal position of the entity
      */
-    public void setX_pos(int x_pos) {
+    public void setX_pos(double x_pos) {
         this.x_pos = x_pos;
         if (this.imageView != null) {
             this.imageView.setLayoutX(x_pos);
@@ -101,7 +101,7 @@ public abstract class Entity {
      *
      * @param y_pos The vertical position of the entity
      */
-    public void setY_pos(int y_pos) {
+    public void setY_pos(double y_pos) {
         this.y_pos = y_pos;
         if (this.imageView != null) {
             this.imageView.setLayoutY(y_pos);
@@ -116,7 +116,7 @@ public abstract class Entity {
      *
      * @return The horizontal position of the entity
      */
-    public int getX_pos() {
+    public double getX_pos() {
         return x_pos;
     }
 
@@ -124,7 +124,7 @@ public abstract class Entity {
      *
      * @return The vertical position of the entity
      */
-    public int getY_pos() {
+    public double getY_pos() {
         return y_pos;
     }
 
