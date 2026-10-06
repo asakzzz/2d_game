@@ -38,7 +38,7 @@ public class ImageReading {
      * @return An array with the Images inside
      */
 
-    public static Image[] getAnimation(Image sheet, int col, int row, int n, int frameWidth, int frameHeigh) {
+         public static Image[] getAnimation(Image sheet, int col, int row, int n, int frameWidth, int frameHeigh) {
         Image[] frames = new Image[n];
 
         for (int i = 0; i < n; i++) {

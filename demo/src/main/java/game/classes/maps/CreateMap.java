@@ -110,6 +110,18 @@ public class CreateMap {
         return this.tiles[row][col] == 1;
     }
 
+    public boolean isWall(double x, double y, double width, double height) {
+        double right = x + width - 0.003;
+        double bottom = y + height - 0.003;
+
+        boolean topLeft = isWall(x, y);
+        boolean topRight = isWall(right, y);
+        boolean bottomLeft = isWall(x, bottom);
+        boolean bottomRight = isWall(right, bottom);
+
+        return topLeft || topRight || bottomLeft || bottomRight;
+    }
+
     /**
      *
      * @param x The x position of the player
@@ -125,13 +137,24 @@ public class CreateMap {
         return this.tiles[row][col] == 2;
     }
 
+    public boolean isDoor(double x, double y, double width, double height) {
+        double right = x + width - 0.001;
+        double bottom = y + height - 0.001;
+
+        boolean topLeft = isWall(x, y);
+        boolean topRight = isWall(right, y);
+        boolean bottomLeft = isWall(x, bottom);
+        boolean bottomRight = isWall(right, bottom);
+
+        return topLeft || topRight || bottomLeft || bottomRight;
+    }
+
     /**
-     * 
+     *
      * @param x The x position of the player
      * @param y The y position of the player
      * @return boolean (true if previous door, false otherwise)
      */
-
     public boolean isPreviousDoor(double x, double y) {
         int col = (int) (x / tileSize);
         int row = (int) (y / tileSize);
@@ -140,6 +163,18 @@ public class CreateMap {
             return false;
         }
         return this.tiles[row][col] == 3;
+    }
+
+    public boolean isPreviousDoor(double x, double y, double width, double height) {
+        double right = x + width - 0.003;
+        double bottom = y + height - 0.003;
+
+        boolean topLeft = isWall(x, y);
+        boolean topRight = isWall(right, y);
+        boolean bottomLeft = isWall(x, bottom);
+        boolean bottomRight = isWall(right, bottom);
+
+        return topLeft || topRight || bottomLeft || bottomRight;
     }
 
 }

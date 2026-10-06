@@ -21,8 +21,7 @@ public class MovementControlPlayer {
     private final CreateMap map;
     private double horizontalSpeed = 0;
     private double verticalSpeed = 0;
-    private final double ACCEL = 1;
-    private final double maxSpeed = 6;
+    private final double speed = 1.3;
 
     /**
      * This creates the class MovementInputControls, which we will call later to
@@ -55,61 +54,33 @@ public class MovementControlPlayer {
             @Override
             public void handle(long now) {
 
-                if (!keys.contains(KeyCode.D) && !keys.contains(KeyCode.Q)) {
+                double width = player.getWidth();
+                double height = player.getHeight();
+
+                int xVector = (keys.contains(KeyCode.D) ? 1 : 0) - (keys.contains(KeyCode.Q) ? 1 : 0);
+                int yVector = (keys.contains(KeyCode.S) ? 1 : 0) - (keys.contains(KeyCode.Z) ? 1 : 0);
+
+                double len = Math.hypot(xVector, yVector);
+
+                if (len == 0) {
                     horizontalSpeed = 0;
-                }
-
-                if (!keys.contains(KeyCode.Z) && !keys.contains(KeyCode.S)) {
                     verticalSpeed = 0;
+                } else {
+                    horizontalSpeed = xVector / len * speed;
+                    verticalSpeed = yVector / len * speed;
                 }
 
-                if (keys.contains(KeyCode.D) && map.isWall(player.getX_pos() + 10, player.getY_pos()) == false) {
-                    if (horizontalSpeed >= maxSpeed) {
-                        player.setX_pos(player.getX_pos() + maxSpeed);
-                        player.setFacingRight(true);
-                    } else {
-                        horizontalSpeed += ACCEL;
-                        player.setX_pos(player.getX_pos() + horizontalSpeed);
-
-                    }
-
-                }
-                if (keys.contains(KeyCode.Q) && map.isWall(player.getX_pos() - 10, player.getY_pos()) == false) {
-                    if (horizontalSpeed >= maxSpeed) {
-                        player.setX_pos(player.getX_pos() - maxSpeed);
-                        player.setFacingLeft(true);
-                    } else {
-                        horizontalSpeed += ACCEL;
-                        player.setX_pos(player.getX_pos() - horizontalSpeed);
-                    }
+                if (horizontalSpeed != 0 && !map.isWall(player.getX_pos() + horizontalSpeed, player.getY_pos(), width, height)) {
+                    player.setX_pos(player.getX_pos() + horizontalSpeed);
                 }
 
-                if (keys.contains(KeyCode.Z) && map.isWall(player.getX_pos(), player.getY_pos() - 10) == false) {
-                    if (verticalSpeed >= maxSpeed) {
-                        player.setY_pos(player.getY_pos() - maxSpeed);
-                    } else {
-                        verticalSpeed += ACCEL;
-                        player.setY_pos(player.getY_pos() - verticalSpeed);
-                    }
-                }
-
-                if (keys.contains(KeyCode.S) && map.isWall(player.getX_pos(), player.getY_pos() + 10) == false) {
-                    if (verticalSpeed >= maxSpeed) {
-                        player.setY_pos(player.getY_pos() + maxSpeed);
-                    } else {
-                        verticalSpeed += ACCEL;
-                        player.setY_pos(player.getY_pos() + verticalSpeed);
-                    }
-                }
-
-                double total = horizontalSpeed + verticalSpeed;
-                if (total > maxSpeed) {
-                    horizontalSpeed = 4;
-                    verticalSpeed = 4;
+                if (verticalSpeed != 0 && !map.isWall(player.getX_pos(), player.getY_pos() + verticalSpeed, width, height)) {
+                    player.setY_pos(player.getY_pos() + verticalSpeed);
                 }
 
             }
-        }.start();
+        }
+                .start();
     }
 
     /**

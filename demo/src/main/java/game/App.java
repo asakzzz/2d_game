@@ -16,6 +16,7 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
@@ -38,7 +39,6 @@ public class App extends Application {
         Player player = new Player(100, 0, 0, sprite);
 
         //initialize player in another file
-
         root.getChildren().add(map.CreateCanva());
         MovementControlPlayer mvnt = implementPlayer(player, map);
 
@@ -58,6 +58,16 @@ public class App extends Application {
         text2.setY(80);
         root.getChildren().add(text2);
 
+        //temporary
+        Rectangle playerHitbox = player.getHitbox();
+
+        playerHitbox.setFill(javafx.scene.paint.Color.TRANSPARENT);
+        playerHitbox.setStroke(javafx.scene.paint.Color.GREEN);
+        playerHitbox.setStrokeWidth(2);
+
+// Add the hitbox visual to the scene root
+        root.getChildren().add(playerHitbox);
+
         stage.setScene(scene);
 
         stage.show();
@@ -69,11 +79,15 @@ public class App extends Application {
             public void handle(long now) {
                 double pos_x = player.getX_pos();
                 double pos_y = player.getY_pos();
+                double width = player.getWidth();
+                double height = player.getHeight();                
+                player.getHitbox();
+
                 text.setText(String.format("Speed = %.1f", mvnt.getSpeed()));
                 text2.setText(String.format("isMoving = " + mvnt.isMoving()));
 
-                boolean playerOnDoor = map.isDoor(pos_x, pos_y);
-                boolean playerOnPreviousDoor = map.isPreviousDoor(pos_x, pos_y);
+                boolean playerOnDoor = map.isDoor(pos_x, pos_y , width , height);
+                boolean playerOnPreviousDoor = map.isPreviousDoor(pos_x, pos_y , width , height);
 
                 //can make a file outta this
                 if (mvnt.isMoving()) {
@@ -110,8 +124,8 @@ public class App extends Application {
         MovementControlPlayer inputControl = new MovementControlPlayer(player, scene, map);
         inputControl.handleInput();
         ImageView view = player.getImageView();
-        view.setFitWidth(64);          
-        view.setPreserveRatio(true);   
+        view.setFitWidth(64);
+        view.setPreserveRatio(true);
         root.getChildren().add(player.getImageView());
         return inputControl;
     }
