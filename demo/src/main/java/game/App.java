@@ -2,9 +2,11 @@ package game;
 
 import java.io.IOException;
 
+import game.classes.entities.Enemy;
 import game.classes.entities.Player;
 import game.classes.maps.CreateMap;
 import game.classes.maps.MapPool;
+import game.classes.movement.Collision;
 import game.classes.movement.MovementControlPlayer;
 import game.classes.sprites.AnimateSprite;
 import game.classes.sprites.ImageReading;
@@ -23,7 +25,7 @@ import javafx.stage.Stage;
 /**
  * JavaFX App
  */
-public class App extends Application {
+public class App<T> extends Application {
 
     private static Scene scene;
     private Pane root;
@@ -37,10 +39,12 @@ public class App extends Application {
         Image sheet = new Image(App.class.getResourceAsStream("assets/knight.png"));
         Image sprite = ImageReading.getFrame(sheet, 0, 0, 32, 32);
         Player player = new Player(100, 0, 0, sprite);
+        Enemy enemy = new Enemy(10, 0, 0, sprite);
 
         //initialize player in another file
         root.getChildren().add(map.CreateCanva());
         MovementControlPlayer mvnt = implementPlayer(player, map);
+        Collision collision = new Collision<T>();
 
         AnimateSprite animation = new AnimateSprite(8);
         ImageReading imageReading = new ImageReading();
@@ -49,6 +53,7 @@ public class App extends Application {
 
         Text text = new Text();
         Text text2 = new Text();
+        Text text3 = new Text();
 
         text.setX(1700);
         text.setY(50);
@@ -58,15 +63,25 @@ public class App extends Application {
         text2.setY(80);
         root.getChildren().add(text2);
 
+        text3.setX(1700);
+        text3.setY(110);
+        root.getChildren().add(text3);
+
         //temporary
         Rectangle playerHitbox = player.getHitbox();
+        Rectangle enemyHitbox = enemy.getHitbox();
 
         playerHitbox.setFill(javafx.scene.paint.Color.TRANSPARENT);
         playerHitbox.setStroke(javafx.scene.paint.Color.GREEN);
         playerHitbox.setStrokeWidth(2);
 
+        enemyHitbox.setFill(javafx.scene.paint.Color.TRANSPARENT);
+        enemyHitbox.setStroke(javafx.scene.paint.Color.GREEN);
+        enemyHitbox.setStrokeWidth(2);
+
 // Add the hitbox visual to the scene root
         root.getChildren().add(playerHitbox);
+        root.getChildren().add(enemyHitbox);
 
         stage.setScene(scene);
 
@@ -80,14 +95,16 @@ public class App extends Application {
                 double pos_x = player.getX_pos();
                 double pos_y = player.getY_pos();
                 double width = player.getWidth();
-                double height = player.getHeight();                
+                double height = player.getHeight();
                 player.getHitbox();
+                enemy.getHitbox();
 
                 text.setText(String.format("Speed = %.1f", mvnt.getSpeed()));
                 text2.setText(String.format("isMoving = " + mvnt.isMoving()));
+                text3.setText(String.format("isColliding = " + collision.CollidingHitbox(player, enemy)));
 
-                boolean playerOnDoor = map.isDoor(pos_x, pos_y , width , height);
-                boolean playerOnPreviousDoor = map.isPreviousDoor(pos_x, pos_y , width , height);
+                boolean playerOnDoor = map.isDoor(pos_x, pos_y, width, height);
+                boolean playerOnPreviousDoor = map.isPreviousDoor(pos_x, pos_y, width, height);
 
                 //can make a file outta this
                 if (mvnt.isMoving()) {
