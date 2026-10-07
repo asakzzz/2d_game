@@ -1,8 +1,6 @@
 package game.classes.maps;
 
 import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.paint.Color;
 
 /**
  *
@@ -48,50 +46,12 @@ public class CreateMap {
 
     /**
      *
-     * @param tiles Prebuillt map passed in parameter to be drawn into the
-     * window
-     * @return the completed canva This method shapes the canva to the right
-     * size (tiles * tileSize), then itters through the matrix It detects if the
-     * cell is a wall or the gound depending on the number It finally draws the
-     * cell depending on the type
-     */
-    public Canvas CreateCanva(int[][] tiles) {
-        int rows = tiles.length;
-        int cols = tiles[0].length;
-        Canvas canvas = new Canvas(cols * tileSize, rows * tileSize);
-        GraphicsContext gc = canvas.getGraphicsContext2D();
-
-        for (int row = 0; row < rows; row++) {
-            for (int col = 0; col < cols; col++) {
-                if (tiles[row][col] == 0) {
-                    gc.setFill(Color.ALICEBLUE);
-                }
-
-                if (tiles[row][col] == 1) {
-                    gc.setFill(Color.CRIMSON);
-                }
-
-                if (tiles[row][col] == 2) {
-                    gc.setFill(Color.GREEN);
-                }
-
-                if (tiles[row][col] == 3) {
-                    gc.setFill(Color.BROWN);
-                }
-                gc.fillRect(col * tileSize, row * tileSize, tileSize, tileSize);
-            }
-        }
-        return canvas;
-    }
-
-    /**
-     *
      * @return the completed canva This method shapes the canva using the other
      * method above
      */
     public Canvas CreateCanva() {
-
-        return CreateCanva(this.tiles);
+        Map map = new Map(this.tiles);
+        return MapRenderer.render(map);
     }
 
     /**
