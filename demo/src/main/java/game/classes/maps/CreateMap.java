@@ -110,9 +110,18 @@ public class CreateMap {
         return this.tiles[row][col] == 1;
     }
 
+    /**
+     *
+     * @param x The x position of the player
+     * @param y The y position of the player
+     * @param width The witdth of the hitbox
+     * @param height The height of the hitbox
+     * @return A boolean depending on isWall and the side of the hitbox being
+     * detected
+     */
     public boolean isWall(double x, double y, double width, double height) {
-        double right = x + width - 0.003;
-        double bottom = y + height - 0.003;
+        double right = x + width - 0.01;
+        double bottom = y + height - 0.01;
 
         boolean topLeft = isWall(x, y);
         boolean topRight = isWall(right, y);
@@ -137,6 +146,15 @@ public class CreateMap {
         return this.tiles[row][col] == 2;
     }
 
+    /**
+     *
+     * @param x The x position of the player
+     * @param y The y position of the player
+     * @param width The witdth of the hitbox
+     * @param height The height of the hitbox
+     * @return A boolean depending on isDoor and the side of the hitbox being
+     * detected
+     */
     public boolean isDoor(double x, double y, double width, double height) {
         double right = x + width - 0.001;
         double bottom = y + height - 0.001;
@@ -165,6 +183,15 @@ public class CreateMap {
         return this.tiles[row][col] == 3;
     }
 
+    /**
+     *
+     * @param x The x position of the player
+     * @param y The y position of the player
+     * @param width The witdth of the hitbox
+     * @param height The height of the hitbox
+     * @return A boolean depending on isPreviousDoor and the side of the hitbox
+     * being detected
+     */
     public boolean isPreviousDoor(double x, double y, double width, double height) {
         double right = x + width - 0.003;
         double bottom = y + height - 0.003;

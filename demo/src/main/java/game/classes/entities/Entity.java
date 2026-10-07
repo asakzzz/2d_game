@@ -169,8 +169,8 @@ public abstract class Entity {
     }
 
     public Rectangle getHitbox() {
-        double width = getImageView().getBoundsInParent().getWidth();
-        double heigh = getImageView().getBoundsInParent().getHeight();
+        double width = getImageView().getBoundsInParent().getWidth() - 7;
+        double heigh = getImageView().getBoundsInParent().getHeight() - 7;
 
         if (this.hitbox == null) {
             this.hitbox = new Rectangle(getX_pos(), getY_pos(), width, heigh);
@@ -187,11 +187,11 @@ public abstract class Entity {
     }
 
     public double getWidth() {
-        return imageView.getBoundsInParent().getWidth();
+        return imageView.getBoundsInParent().getWidth() - 7;
     }
 
     public double getHeight() {
-        return imageView.getBoundsInParent().getHeight();
+        return imageView.getBoundsInParent().getHeight() - 7;
     }
 
 }

@@ -21,7 +21,7 @@ public class MovementControlPlayer {
     private final CreateMap map;
     private double horizontalSpeed = 0;
     private double verticalSpeed = 0;
-    private final double speed = 1.3;
+    private final double speed = 0.8;
 
     /**
      * This creates the class MovementInputControls, which we will call later to
