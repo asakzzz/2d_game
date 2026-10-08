@@ -3,6 +3,7 @@ package game.classes.entities;
 import game.classes.inventory.Inventory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.shape.Rectangle;
 
 /**
  *
@@ -21,6 +22,7 @@ public abstract class Entity {
     protected double y_pos;
     protected boolean facingLeft;
     protected boolean facingRight;
+    protected Rectangle hitbox;
 
     /**
      * Constructs a new {@code Entity} with three parameters {@code hp, def} and
@@ -164,6 +166,30 @@ public abstract class Entity {
      */
     public boolean isFacingRight() {
         return facingRight;
+    }
+
+    public Rectangle getHitbox() {
+
+        if (this.hitbox == null) {
+            this.hitbox = new Rectangle(getX_pos(), getY_pos(), getWidth(), getHeight());
+
+        } else {
+            this.hitbox.setX(getX_pos());
+            this.hitbox.setY(getY_pos());
+            this.hitbox.setWidth(getWidth());
+            this.hitbox.setHeight(getHeight());
+        }
+
+        return this.hitbox;
+
+    }
+
+    public double getWidth() {
+        return imageView.getBoundsInParent().getWidth() - 7;
+    }
+
+    public double getHeight() {
+        return imageView.getBoundsInParent().getHeight() - 7;
     }
 
 }
