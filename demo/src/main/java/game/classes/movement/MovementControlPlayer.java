@@ -8,6 +8,7 @@ import game.classes.maps.CreateMap;
 import javafx.animation.AnimationTimer;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 
 /**
  *
@@ -47,8 +48,8 @@ public class MovementControlPlayer {
      * the maxSpeed caps it to avoid goind mach 20
      */
     public void handleInput() {
-        scene.setOnKeyPressed(KeyEvent -> keys.add(KeyEvent.getCode()));
-        scene.setOnKeyReleased(KeyEvent -> keys.remove(KeyEvent.getCode()));
+        scene.addEventHandler(KeyEvent.KEY_PRESSED, e -> keys.add(e.getCode()));
+        scene.addEventHandler(KeyEvent.KEY_RELEASED, e -> keys.remove(e.getCode()));
 
         new AnimationTimer() {
             @Override
