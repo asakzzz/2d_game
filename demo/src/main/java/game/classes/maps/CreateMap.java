@@ -120,15 +120,19 @@ public class CreateMap {
      * detected
      */
     public boolean isWall(double x, double y, double width, double height) {
-        double right = x + width - 0.01;
-        double bottom = y + height - 0.01;
+        int firstCol = (int) Math.floor(x / tileSize);
+        int lastCol = (int) Math.floor((x + width - 0.01) / tileSize);
+        int firstRow = (int) Math.floor(y / tileSize);
+        int lastRow = (int) Math.floor((y + height - 0.01) / tileSize);
 
-        boolean topLeft = isWall(x, y);
-        boolean topRight = isWall(right, y);
-        boolean bottomLeft = isWall(x, bottom);
-        boolean bottomRight = isWall(right, bottom);
-
-        return topLeft || topRight || bottomLeft || bottomRight;
+        for (int row = firstRow; row <= lastRow; row++) {
+            for (int col = firstCol; col <= lastCol; col++) {
+                if (isWall(col * tileSize + 1, row * tileSize + 1)) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     /**
@@ -155,16 +159,20 @@ public class CreateMap {
      * @return A boolean depending on isDoor and the side of the hitbox being
      * detected
      */
-    public boolean isDoor(double x, double y, double width, double height) {
-        double right = x + width - 0.001;
-        double bottom = y + height - 0.001;
+ public boolean isDoor(double x, double y, double width, double height) {
+        int firstCol = (int) Math.floor(x / tileSize);
+        int lastCol = (int) Math.floor((x + width - 0.01) / tileSize);
+        int firstRow = (int) Math.floor(y / tileSize);
+        int lastRow = (int) Math.floor((y + height - 0.01) / tileSize);
 
-        boolean topLeft = isDoor(x, y);
-        boolean topRight = isDoor(right, y);
-        boolean bottomLeft = isDoor(x, bottom);
-        boolean bottomRight = isDoor(right, bottom);
-
-        return topLeft || topRight || bottomLeft || bottomRight;
+        for (int row = firstRow; row <= lastRow; row++) {
+            for (int col = firstCol; col <= lastCol; col++) {
+                if (isDoor(col * tileSize + 1, row * tileSize + 1)) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     /**
@@ -192,16 +200,20 @@ public class CreateMap {
      * @return A boolean depending on isPreviousDoor and the side of the hitbox
      * being detected
      */
-    public boolean isPreviousDoor(double x, double y, double width, double height) {
-        double right = x + width - 0.003;
-        double bottom = y + height - 0.003;
+ public boolean isPreviousDoor(double x, double y, double width, double height) {
+        int firstCol = (int) Math.floor(x / tileSize);
+        int lastCol = (int) Math.floor((x + width - 0.01) / tileSize);
+        int firstRow = (int) Math.floor(y / tileSize);
+        int lastRow = (int) Math.floor((y + height - 0.01) / tileSize);
 
-        boolean topLeft = isPreviousDoor(x, y);
-        boolean topRight = isPreviousDoor(right, y);
-        boolean bottomLeft = isPreviousDoor(x, bottom);
-        boolean bottomRight = isPreviousDoor(right, bottom);
-
-        return topLeft || topRight || bottomLeft || bottomRight;
+        for (int row = firstRow; row <= lastRow; row++) {
+            for (int col = firstCol; col <= lastCol; col++) {
+                if (isPreviousDoor(col * tileSize + 1, row * tileSize + 1)) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
 }

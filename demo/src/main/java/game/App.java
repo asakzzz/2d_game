@@ -148,7 +148,7 @@ public class App<T> extends Application {
         MovementControlPlayer inputControl = new MovementControlPlayer(player, scene, map);
         inputControl.handleInput();
         ImageView view = player.getImageView();
-        view.setFitWidth(128);
+        view.setFitWidth(100);
         view.setPreserveRatio(true);
         root.getChildren().add(player.getImageView());
         return inputControl;

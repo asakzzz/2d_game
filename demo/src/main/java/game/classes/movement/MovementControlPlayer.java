@@ -61,6 +61,12 @@ public class MovementControlPlayer {
                 int xVector = (keys.contains(KeyCode.D) ? 1 : 0) - (keys.contains(KeyCode.Q) ? 1 : 0);
                 int yVector = (keys.contains(KeyCode.S) ? 1 : 0) - (keys.contains(KeyCode.Z) ? 1 : 0);
 
+                if (xVector < 0) {
+                    player.setFacingLeft(true);
+                } else if (xVector > 0) {
+                    player.setFacingRight(true);
+                }
+
                 double len = Math.hypot(xVector, yVector);
 
                 if (len == 0) {
@@ -99,8 +105,6 @@ public class MovementControlPlayer {
     public double getVerticalSpeed() {
         return verticalSpeed;
     }
-
-    
 
     /**
      *

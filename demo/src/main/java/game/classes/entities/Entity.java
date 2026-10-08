@@ -169,17 +169,15 @@ public abstract class Entity {
     }
 
     public Rectangle getHitbox() {
-        double width = getImageView().getBoundsInParent().getWidth() - 7;
-        double heigh = getImageView().getBoundsInParent().getHeight() - 7;
 
         if (this.hitbox == null) {
-            this.hitbox = new Rectangle(getX_pos(), getY_pos(), width, heigh);
+            this.hitbox = new Rectangle(getX_pos(), getY_pos(), getWidth(), getHeight());
 
         } else {
             this.hitbox.setX(getX_pos());
             this.hitbox.setY(getY_pos());
-            this.hitbox.setWidth(width * this.imageView.getScaleX());
-            this.hitbox.setHeight(heigh * this.imageView.getScaleY());
+            this.hitbox.setWidth(getWidth());
+            this.hitbox.setHeight(getHeight());
         }
 
         return this.hitbox;
