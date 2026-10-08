@@ -8,6 +8,7 @@ import game.classes.maps.CreateMap;
 import game.classes.maps.MapPool;
 import game.classes.movement.Collision;
 import game.classes.movement.MovementControlPlayer;
+import game.classes.movement.MovementControlProjectile;
 import game.classes.playerInteractions.ProjectileShooting;
 import game.classes.sprites.AnimateSprite;
 import game.classes.sprites.ImageReading;
@@ -45,11 +46,13 @@ public class App<T> extends Application {
         //initialize player in another file
         root.getChildren().add(map.CreateCanva());
         MovementControlPlayer mvnt = implementPlayer(player, map);
+        ProjectileShooting projectileShooting = new ProjectileShooting();
+        projectileShooting.SpawnDefaultProjectile(root, scene, player, mvnt , map);
+        MovementControlProjectile movementControlProjectile = new MovementControlProjectile(mvnt, map, root);
         Collision collision = new Collision<T>();
 
         AnimateSprite animation = new AnimateSprite(8);
         ImageReading imageReading = new ImageReading();
-        ProjectileShooting projectileShooting = new ProjectileShooting();
         Image[] framesRunning = imageReading.getAnimation(sheet, 0, 2, 8, 32, 32);
         Image[] framesIdle = imageReading.getAnimation(sheet, 0, 0, 4, 32, 32);
 
@@ -100,7 +103,6 @@ public class App<T> extends Application {
                 double height = player.getHeight();
                 player.getHitbox();
                 enemy.getHitbox();
-                projectileShooting.SpawnDefaultProjectile(root, scene , player);
 
                 text.setText(String.format("Speed = %.1f", mvnt.getSpeed()));
                 text2.setText(String.format("isMoving = " + mvnt.isMoving()));
@@ -134,6 +136,8 @@ public class App<T> extends Application {
                     map.loadTIles(pool.goBack());
                     root.getChildren().set(0, map.CreateCanva());
                 }
+
+                
 
             }
         }.start();

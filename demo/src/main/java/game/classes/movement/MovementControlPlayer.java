@@ -92,6 +92,16 @@ public class MovementControlPlayer {
         return Math.hypot(horizontalSpeed, verticalSpeed);
     }
 
+    public double getHorizontalSpeed() {
+        return horizontalSpeed;
+    }
+
+    public double getVerticalSpeed() {
+        return verticalSpeed;
+    }
+
+    
+
     /**
      *
      * @return a boolean, checking if the player is moving or not
