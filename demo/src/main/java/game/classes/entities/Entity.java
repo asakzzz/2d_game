@@ -178,8 +178,8 @@ public abstract class Entity {
         } else {
             this.hitbox.setX(getX_pos());
             this.hitbox.setY(getY_pos());
-            this.hitbox.setWidth(width);
-            this.hitbox.setHeight(heigh);
+            this.hitbox.setWidth(width * this.imageView.getScaleX());
+            this.hitbox.setHeight(heigh * this.imageView.getScaleY());
         }
 
         return this.hitbox;

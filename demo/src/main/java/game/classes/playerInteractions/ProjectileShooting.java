@@ -12,13 +12,10 @@ import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
-import javafx.scene.shape.Rectangle;
 
 public class ProjectileShooting {
 
-    public boolean keyDown = false;
-
-    public void SpawnDefaultProjectile(Pane root, Scene scene, Player player , MovementControlPlayer movement , CreateMap map) {
+    public void SpawnDefaultProjectile(Pane root, Scene scene, Player player, MovementControlPlayer movement, CreateMap map) {
 
         //for testing purposes
         Image sheet = new Image(App.class.getResourceAsStream("assets/knight.png"));
@@ -26,31 +23,18 @@ public class ProjectileShooting {
 
         //make the projectile appear if space pressed
         scene.addEventHandler(KeyEvent.KEY_PRESSED, e -> {
-            if (e.getCode() == KeyCode.SPACE && !keyDown) {
-                keyDown = true;
-                Projectile projectile = new Projectile(1, 0, 0, sprite);
-                MovementControlProjectile projectileMovement = new MovementControlProjectile(movement , map, root);
-                Rectangle hitbox = projectile.getHitbox();
-                projectile.setX_pos(player.getX_pos());
-                projectile.setY_pos(player.getY_pos());
+            double xVector = (e.getCode() == KeyCode.RIGHT ? 1 : 0) - (e.getCode() == KeyCode.LEFT ? 1 : 0);
+            double yVector = (e.getCode() == KeyCode.DOWN ? 1 : 0) - (e.getCode() == KeyCode.UP ? 1 : 0);
 
-                hitbox.setFill(javafx.scene.paint.Color.TRANSPARENT);
-                hitbox.setStroke(javafx.scene.paint.Color.GREEN);
-                hitbox.setStrokeWidth(2);
+            Projectile projectile = new Projectile(1, 0, 0, sprite);
+            projectile.setX_pos(player.getX_pos());
+            projectile.setY_pos(player.getY_pos());
+            root.getChildren().add(projectile.getImageView());
 
-                root.getChildren().add(projectile.getImageView());
-                projectileMovement.MoveProjectile(projectile);
-
-            }
+            new MovementControlProjectile(movement, map, root, scene).MoveProjectile(projectile, scene, xVector, yVector);
 
         }
         );
-        scene.addEventHandler(KeyEvent.KEY_RELEASED, e -> {
-            if (e.getCode() == KeyCode.SPACE) {
-                keyDown = false;
-
-            }
-        });
 
     }
 }

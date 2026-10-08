@@ -3,31 +3,29 @@ package game.classes.movement;
 import game.classes.entities.Projectile;
 import game.classes.maps.CreateMap;
 import javafx.animation.AnimationTimer;
+import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 
 public class MovementControlProjectile {
+
+    private double xVector = 0;
+    private double yVector = 0;
 
     MovementControlPlayer movement;
     CreateMap map;
     Pane root;
 
-    public MovementControlProjectile(MovementControlPlayer movement, CreateMap map, Pane root) {
+    public MovementControlProjectile(MovementControlPlayer movement, CreateMap map, Pane root, Scene scene) {
         this.movement = movement;
         this.map = map;
         this.root = root;
     }
 
-    public void MoveProjectile(Projectile projectile) {
-        double projectileX = movement.getHorizontalSpeed();
-        double projectileY = movement.getVerticalSpeed();
+    public void MoveProjectile(Projectile projectile, Scene scene, double directionX, double directionY) {
 
-        if (projectileX == 0 && projectileY == 0) {
-            projectileX = 3;
-        }
-
-        double len = Math.hypot(projectileX, projectileY);
-        final double xVector = projectileX / len * 3;
-        final double yVector = projectileY / len * 3;
+        double len = Math.hypot(directionX, directionY);
+        xVector = directionX / len * 3;
+        yVector = directionY / len * 3;
 
         new AnimationTimer() {
             @Override
@@ -36,13 +34,12 @@ public class MovementControlProjectile {
                 projectile.setY_pos(projectile.getY_pos() + yVector);
                 if (hitsWall(projectile)) {
                     root.getChildren().remove(projectile.getImageView());
-                    stop(); 
+                    stop();
                 }
             }
         }.start();
 
     }
-
 
     private boolean hitsWall(Projectile projectile) {
         return map.isWall(projectile.getX_pos(), projectile.getY_pos(),
