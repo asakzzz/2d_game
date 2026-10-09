@@ -7,6 +7,7 @@ import game.classes.entities.Player;
 import game.classes.maps.CreateMap;
 import game.classes.maps.MapPool;
 import game.classes.movement.Collision;
+import game.classes.movement.MovementControlEnemy;
 import game.classes.movement.MovementControlPlayer;
 import game.classes.movement.MovementControlProjectile;
 import game.classes.playerInteractions.ProjectileShooting;
@@ -49,6 +50,7 @@ public class App<T> extends Application {
         ProjectileShooting projectileShooting = new ProjectileShooting();
         projectileShooting.SpawnDefaultProjectile(root, scene, player, mvnt , map);
         MovementControlProjectile movementControlProjectile = new MovementControlProjectile(mvnt, map, root , scene);
+        MovementControlEnemy mvntEnemy = new MovementControlEnemy();
         Collision collision = new Collision<T>();
 
         AnimateSprite animation = new AnimateSprite(8);
@@ -107,6 +109,8 @@ public class App<T> extends Application {
                 text.setText(String.format("Speed = %.1f", mvnt.getSpeed()));
                 text2.setText(String.format("isMoving = " + mvnt.isMoving()));
                 text3.setText(String.format("isColliding = " + collision.CollidingHitbox(player, enemy)));
+
+                mvntEnemy.enemyNearestNeighbor(enemy, player , map);
 
                 boolean playerOnDoor = map.isDoor(pos_x, pos_y, width, height);
                 boolean playerOnPreviousDoor = map.isPreviousDoor(pos_x, pos_y, width, height);
