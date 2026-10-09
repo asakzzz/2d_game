@@ -15,6 +15,9 @@ import javafx.scene.layout.Pane;
 
 public class ProjectileShooting {
 
+    private long lastshot = 0;
+    private long cooldown = 300_000_000L;
+
     public void SpawnDefaultProjectile(Pane root, Scene scene, Player player, MovementControlPlayer movement, CreateMap map) {
 
         //for testing purposes
@@ -25,13 +28,17 @@ public class ProjectileShooting {
         scene.addEventHandler(KeyEvent.KEY_PRESSED, e -> {
             double xVector = (e.getCode() == KeyCode.RIGHT ? 1 : 0) - (e.getCode() == KeyCode.LEFT ? 1 : 0);
             double yVector = (e.getCode() == KeyCode.DOWN ? 1 : 0) - (e.getCode() == KeyCode.UP ? 1 : 0);
+            long now = System.nanoTime();
 
-            Projectile projectile = new Projectile(1, 0, 0, sprite);
-            projectile.setX_pos(player.getX_pos());
-            projectile.setY_pos(player.getY_pos());
-            root.getChildren().add(projectile.getImageView());
+            if (now - lastshot >= cooldown) {
+                lastshot = now;
+                Projectile projectile = new Projectile(1, 0, 0, sprite);
+                projectile.setX_pos(player.getX_pos());
+                projectile.setY_pos(player.getY_pos());
+                root.getChildren().add(projectile.getImageView());
 
-            new MovementControlProjectile(movement, map, root, scene).MoveProjectile(projectile, scene, xVector, yVector);
+                new MovementControlProjectile(movement, map, root, scene).MoveProjectile(projectile, scene, xVector, yVector);
+            }
 
         }
         );
