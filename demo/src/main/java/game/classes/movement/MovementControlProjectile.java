@@ -3,7 +3,6 @@ package game.classes.movement;
 import game.classes.entities.Projectile;
 import game.classes.maps.CreateMap;
 import javafx.animation.AnimationTimer;
-import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 
 public class MovementControlProjectile {
@@ -15,13 +14,27 @@ public class MovementControlProjectile {
     CreateMap map;
     Pane root;
 
-    public MovementControlProjectile(MovementControlPlayer movement, CreateMap map, Pane root, Scene scene) {
+    /**
+     * 
+     * @param movement The movement of the player to keep its inertia
+     * @param map The map where the player is, used here for collisions
+     * @param root The root to add elements in the window
+     */
+
+    public MovementControlProjectile(MovementControlPlayer movement, CreateMap map, Pane root) {
         this.movement = movement;
         this.map = map;
         this.root = root;
     }
 
-    public void MoveProjectile(Projectile projectile, Scene scene, double directionX, double directionY) {
+    /**
+     * 
+     * @param projectile The projectile we want to move
+     * @param directionX The direction where we want to shoot the projectile
+     * @param directionY The direction where we want to shoot the projectile
+     */
+
+    public void MoveProjectile(Projectile projectile, double directionX, double directionY) {
 
         double len = Math.hypot(directionX, directionY);
         xVector = directionX / len * 3;
@@ -40,6 +53,12 @@ public class MovementControlProjectile {
         }.start();
 
     }
+
+    /**
+     * 
+     * @param projectile The projectile we want to check
+     * @return A boolean, true if the projectile hits a wall, false otherwise
+     */
 
     private boolean hitsWall(Projectile projectile) {
         return map.isWall(projectile.getX_pos(), projectile.getY_pos(),

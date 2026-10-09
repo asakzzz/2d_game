@@ -8,6 +8,13 @@ public class MovementControlEnemy {
 
     private double speed = 0.4;
 
+    /**
+     * 
+     * @param enemy The enemy we want to move
+     * @param player The player we want the enemy to move to
+     * @param map the map where the scene takes place
+     */
+
     public void enemyNearestNeighbor(Enemy enemy, Player player, CreateMap map) {
 
         double xVector = player.getX_pos() - enemy.getX_pos();

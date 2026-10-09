@@ -18,6 +18,15 @@ public class ProjectileShooting {
     private long lastshot = 0;
     private long cooldown = 300_000_000L;
 
+    /**
+     * 
+     * @param root The root of the window, meant to add or remove elements from it
+     * @param scene The scene where the player and projectile are
+     * @param player The player who shoots the projectile
+     * @param movement The movement controls of the player
+     * @param map The map where the scene takes place
+     */
+
     public void SpawnDefaultProjectile(Pane root, Scene scene, Player player, MovementControlPlayer movement, CreateMap map) {
 
         //for testing purposes
@@ -37,7 +46,7 @@ public class ProjectileShooting {
                 projectile.setY_pos(player.getY_pos());
                 root.getChildren().add(projectile.getImageView());
 
-                new MovementControlProjectile(movement, map, root, scene).MoveProjectile(projectile, scene, xVector, yVector);
+                new MovementControlProjectile(movement, map, root).MoveProjectile(projectile, xVector, yVector);
             }
 
         }

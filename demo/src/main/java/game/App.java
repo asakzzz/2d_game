@@ -49,7 +49,7 @@ public class App<T> extends Application {
         MovementControlPlayer mvnt = implementPlayer(player, map);
         ProjectileShooting projectileShooting = new ProjectileShooting();
         projectileShooting.SpawnDefaultProjectile(root, scene, player, mvnt , map);
-        MovementControlProjectile movementControlProjectile = new MovementControlProjectile(mvnt, map, root , scene);
+        MovementControlProjectile movementControlProjectile = new MovementControlProjectile(mvnt, map, root);
         MovementControlEnemy mvntEnemy = new MovementControlEnemy();
         Collision collision = new Collision<T>();
 
