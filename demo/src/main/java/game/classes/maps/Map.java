@@ -1,7 +1,11 @@
 package game.classes.maps;
 
 public class Map {
+    public static final int tileSize = 64;
 
+    public static int getTileSize() {
+        return tileSize;
+    }
     private final int[][] tiles;
 
     public Map(int[][] tiles) {
@@ -21,8 +25,8 @@ public class Map {
     }
 
     private int getTile(double x, double y) {
-        int col = (int) (x / CreateMap.tileSize);
-        int row = (int) (y / CreateMap.tileSize);
+        int col = (int) (x / tileSize);
+        int row = (int) (y / tileSize);
 
         if (row < 0 || col < 0 ||
             row >= tiles.length ||
