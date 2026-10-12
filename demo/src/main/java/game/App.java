@@ -3,7 +3,6 @@ package game;
 import java.io.IOException;
 
 import game.classes.entities.Player;
-import game.classes.maps.CreateMap;
 import game.classes.maps.MapPool;
 import game.classes.movement.MovementControlPlayer;
 import game.classes.sprites.ImageReading;
