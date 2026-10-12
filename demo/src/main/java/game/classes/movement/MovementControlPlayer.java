@@ -1,13 +1,13 @@
 package game.classes.movement;
 
-import game.classes.entities.Player;
-import javafx.scene.Scene;
-import javafx.scene.input.KeyCode;
-import javafx.animation.AnimationTimer;
-import game.classes.maps.CreateMap;
-
 import java.util.HashSet;
 import java.util.Set;
+
+import game.classes.entities.Player;
+import game.classes.maps.Map;
+import javafx.animation.AnimationTimer;
+import javafx.scene.Scene;
+import javafx.scene.input.KeyCode;
 
 /**
  *
@@ -18,7 +18,7 @@ public class MovementControlPlayer {
     private final Player player;
     private final Scene scene;
     private final Set<KeyCode> keys = new HashSet<>();
-    private final CreateMap map;
+    private final Map map;
     private int horizontalSpeed = 0;
     private int verticalSpeed = 0;
     private final int ACCEL = 1;
@@ -31,7 +31,7 @@ public class MovementControlPlayer {
      * @param player The player we want to move
      * @param scene The scene where the player is
      */
-    public MovementControlPlayer(Player player, Scene scene, CreateMap map) {
+    public MovementControlPlayer(Player player, Scene scene, Map map) {
         this.player = player;
         this.scene = scene;
         this.map = map;
