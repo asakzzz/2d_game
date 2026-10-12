@@ -5,11 +5,11 @@ import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 public class MapLoader {
+
     public static Map getMapFile(String MapPath) {
         int[][] map = new int [13][24];
         File file = new File(MapPath);
         int count = 0;
-
         try (Scanner scanner = new Scanner(file)) {
             while (scanner.hasNextLine()) {
                 String line = scanner.nextLine().trim();
