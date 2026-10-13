@@ -52,7 +52,7 @@ public class EnemyRandomMovement {
 
         double distance = Math.hypot(ac, cb);
 
-        if (distance > 300) {
+        if (distance > 400) {
 
             return;
         }

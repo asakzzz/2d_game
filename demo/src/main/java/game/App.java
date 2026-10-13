@@ -7,6 +7,7 @@ import game.classes.entities.Player;
 import game.classes.maps.CreateMap;
 import game.classes.maps.MapPool;
 import game.classes.movement.Collision;
+import game.classes.movement.enemyMovements.EnemyFleePlayer;
 import game.classes.movement.enemyMovements.EnemyNearestNeighbor;
 import game.classes.movement.enemyMovements.EnemyRandomMovement;
 import game.classes.movement.playerMovements.MovementControlPlayer;
@@ -44,6 +45,8 @@ public class App<T> extends Application {
         Image sprite = ImageReading.getFrame(sheet, 0, 0, 32, 32);
         Player player = new Player(100, 0, 0, sprite);
         Enemy enemy = new Enemy(10, 0, 0, sprite);
+        enemy.setX_pos(200);
+        enemy.setY_pos(200);
 
         //initialize player in another file
         root.getChildren().add(map.CreateCanva());
@@ -52,6 +55,7 @@ public class App<T> extends Application {
         projectileShooting.SpawnDefaultProjectile(root, scene, player, mvnt , map);
         MovementControlProjectile movementControlProjectile = new MovementControlProjectile(mvnt, map, root);
         EnemyNearestNeighbor enemyNearestNeighbor = new EnemyNearestNeighbor();
+        EnemyFleePlayer enemyFleePlayer = new EnemyFleePlayer();
         EnemyRandomMovement enemyRandomMovement = new EnemyRandomMovement();
         Collision collision = new Collision<T>();
 
@@ -112,8 +116,7 @@ public class App<T> extends Application {
                 text2.setText(String.format("isMoving = " + mvnt.isMoving()));
                 text3.setText(String.format("isColliding = " + collision.CollidingHitbox(player, enemy)));
 
-                // enemyNearestNeighbor.enemyNearestNeighbor(enemy, player , map);
-                enemyRandomMovement.enemyRandomMovement(enemy, player, map , now);
+                enemyFleePlayer.enemyFleePlayer(enemy, player, map);
 
                 boolean playerOnDoor = map.isDoor(pos_x, pos_y, width, height);
                 boolean playerOnPreviousDoor = map.isPreviousDoor(pos_x, pos_y, width, height);
