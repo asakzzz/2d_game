@@ -52,7 +52,7 @@ public class App<T> extends Application {
         root.getChildren().add(map.CreateCanva());
         game.classes.movement.playerMovements.MovementControlPlayer mvnt = implementPlayer(player, map);
         ProjectileShooting projectileShooting = new ProjectileShooting();
-        projectileShooting.SpawnDefaultProjectile(root, scene, player, mvnt , map);
+        projectileShooting.SpawnDefaultProjectile(root, scene, player, mvnt, map);
         MovementControlProjectile movementControlProjectile = new MovementControlProjectile(mvnt, map, root);
         EnemyNearestNeighbor enemyNearestNeighbor = new EnemyNearestNeighbor();
         EnemyFleePlayer enemyFleePlayer = new EnemyFleePlayer();
@@ -124,8 +124,11 @@ public class App<T> extends Application {
                 //can make a file outta this
                 if (mvnt.isMoving()) {
                     animation.animate(player, framesRunning, now);
+                    animation.animate(enemy, framesRunning, now);
                 } else {
                     animation.animate(player, framesIdle, now);
+                    animation.animate(enemy, framesIdle, now);
+
                 }
 
                 //can make another file outta this
@@ -146,8 +149,6 @@ public class App<T> extends Application {
                     map.loadTIles(pool.goBack());
                     root.getChildren().set(0, map.CreateCanva());
                 }
-
-                
 
             }
         }.start();
