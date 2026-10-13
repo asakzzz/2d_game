@@ -1,4 +1,4 @@
-package game.classes.movement;
+package game.classes.movement.playerMovements;
 
 import java.util.HashSet;
 import java.util.Set;

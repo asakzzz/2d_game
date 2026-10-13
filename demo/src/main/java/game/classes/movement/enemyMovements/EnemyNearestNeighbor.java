@@ -1,10 +1,10 @@
-package game.classes.movement;
+package game.classes.movement.enemyMovements;
 
 import game.classes.entities.Enemy;
 import game.classes.entities.Player;
 import game.classes.maps.CreateMap;
 
-public class MovementControlEnemy {
+public class EnemyNearestNeighbor {
 
     private double speed = 0.4;
 

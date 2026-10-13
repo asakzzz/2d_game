@@ -1,7 +1,8 @@
-package game.classes.movement;
+package game.classes.movement.projectileMovements;
 
 import game.classes.entities.Projectile;
 import game.classes.maps.CreateMap;
+import game.classes.movement.playerMovements.MovementControlPlayer;
 import javafx.animation.AnimationTimer;
 import javafx.scene.layout.Pane;
 

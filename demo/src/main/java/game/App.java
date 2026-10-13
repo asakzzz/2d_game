@@ -7,9 +7,10 @@ import game.classes.entities.Player;
 import game.classes.maps.CreateMap;
 import game.classes.maps.MapPool;
 import game.classes.movement.Collision;
-import game.classes.movement.MovementControlEnemy;
-import game.classes.movement.MovementControlPlayer;
-import game.classes.movement.MovementControlProjectile;
+import game.classes.movement.enemyMovements.EnemyNearestNeighbor;
+import game.classes.movement.enemyMovements.EnemyRandomMovement;
+import game.classes.movement.playerMovements.MovementControlPlayer;
+import game.classes.movement.projectileMovements.MovementControlProjectile;
 import game.classes.playerInteractions.ProjectileShooting;
 import game.classes.sprites.AnimateSprite;
 import game.classes.sprites.ImageReading;
@@ -46,11 +47,12 @@ public class App<T> extends Application {
 
         //initialize player in another file
         root.getChildren().add(map.CreateCanva());
-        MovementControlPlayer mvnt = implementPlayer(player, map);
+        game.classes.movement.playerMovements.MovementControlPlayer mvnt = implementPlayer(player, map);
         ProjectileShooting projectileShooting = new ProjectileShooting();
         projectileShooting.SpawnDefaultProjectile(root, scene, player, mvnt , map);
         MovementControlProjectile movementControlProjectile = new MovementControlProjectile(mvnt, map, root);
-        MovementControlEnemy mvntEnemy = new MovementControlEnemy();
+        EnemyNearestNeighbor enemyNearestNeighbor = new EnemyNearestNeighbor();
+        EnemyRandomMovement enemyRandomMovement = new EnemyRandomMovement();
         Collision collision = new Collision<T>();
 
         AnimateSprite animation = new AnimateSprite(8);
@@ -110,7 +112,8 @@ public class App<T> extends Application {
                 text2.setText(String.format("isMoving = " + mvnt.isMoving()));
                 text3.setText(String.format("isColliding = " + collision.CollidingHitbox(player, enemy)));
 
-                mvntEnemy.enemyNearestNeighbor(enemy, player , map);
+                // enemyNearestNeighbor.enemyNearestNeighbor(enemy, player , map);
+                enemyRandomMovement.enemyRandomMovement(enemy, player, map , now);
 
                 boolean playerOnDoor = map.isDoor(pos_x, pos_y, width, height);
                 boolean playerOnPreviousDoor = map.isPreviousDoor(pos_x, pos_y, width, height);
