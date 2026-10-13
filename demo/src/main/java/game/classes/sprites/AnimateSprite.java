@@ -9,7 +9,7 @@ public class AnimateSprite {
     private int current = 0;
     private long lastSwitch = 0;
 
-    /**
+    /** This method set the frameduration of the class depending on the spritesheet.
      * 
      * @param fps frame per seconds of the spritesheets
      */
@@ -18,7 +18,8 @@ public class AnimateSprite {
         this.frameDuration = (long) (1_000_000_000 / fps);
     }
 
-    /**
+    /** This method animates the player depending on the last frame and the frameduration.
+     * If the requirements are met, the next frame on the spritesheet is set on the player's image.
      * 
      * @param player The player we want to animate
      * @param frames the frames we want to animate the player with
@@ -33,7 +34,7 @@ public class AnimateSprite {
         }
     }
 
-    /**
+    /** This method is here in case of a need to reset the animation in progress. Could be for debug or glitchy transitions
      * 
      * @param player The player we want to reset the frames of
      * @param frames The set of frames we want to reset from

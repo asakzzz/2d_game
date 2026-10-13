@@ -18,8 +18,8 @@ public class ProjectileShooting {
     private long lastshot = 0;
     private long cooldown = 300_000_000L;
 
-    /**
-     * 
+    /** This method spawns a projectile depending on the cooldown computed by the system time, the key pressed for the direction and the position of the player
+     *  It then calls the {@code MoveProjectile} method to move it.
      * @param root The root of the window, meant to add or remove elements from it
      * @param scene The scene where the player and projectile are
      * @param player The player who shoots the projectile

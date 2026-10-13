@@ -15,7 +15,10 @@ public class EnemyRandomMovement {
     private double dirY = 0;
     private long nextChange = 0;
 
-    /**
+    /** This methods moves the enemy randomly when close enough to the player, simulating it fleeing (ranged enemy)
+     * It checks if the distance between the player and the enemy is big enough
+     * if yes, it picks a random new direction using random angles and moves towards it.
+     * if not, it stays in places
      * 
      * @param now The system time when the method is called
      */

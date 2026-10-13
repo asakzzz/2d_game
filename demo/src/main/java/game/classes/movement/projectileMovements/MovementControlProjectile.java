@@ -15,7 +15,7 @@ public class MovementControlProjectile {
     CreateMap map;
     Pane root;
 
-    /**
+    /** This constructors allows each projectile to move independently from each other
      * 
      * @param movement The movement of the player to keep its inertia
      * @param map The map where the player is, used here for collisions
@@ -28,7 +28,8 @@ public class MovementControlProjectile {
         this.root = root;
     }
 
-    /**
+    /** This method computes a vector depending on the player's speed, then moves the projectile keeping those vectors in mind
+     * If the projectile hits a wall, it is killed
      * 
      * @param projectile The projectile we want to move
      * @param directionX The direction where we want to shoot the projectile

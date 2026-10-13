@@ -8,7 +8,8 @@ public class EnemyNearestNeighbor {
 
     private double speed = 0.4;
 
-    /**
+    /** This method makes the enemy chase the player, calculating the distance between them.
+     * It checks if the enemy is on the player, if not it moves the enemy towards it. 
      * 
      * @param enemy The enemy we want to move
      * @param player The player we want the enemy to move to

@@ -9,7 +9,7 @@ import javafx.scene.shape.Rectangle;
 
 public class Collision<T> {
 
-    /**
+    /** This method initialize an array of hitboxes with the player's hitbox and another undefinied entity hitbox.
      * 
      * @param player The player we want to check for hitbox
      * @param otherEntity Another entity (enemy, projectile ...)
@@ -33,7 +33,7 @@ public class Collision<T> {
         return hitboxList;
     }
 
-    /**
+    /** This method check if the hitboxes in the list collides
      * 
      * @param player The player who we want to check the hitbox
      * @param otherEntity The entity which we want to check the hitbox
