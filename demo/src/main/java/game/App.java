@@ -79,7 +79,7 @@ public class App extends Application {
             @Override
             public void handle(long now) {
                 speedText.setText(String.format("Speed = %.1f", movement.getSpeed()));
-                // projectileShooting.SpawnDefaultProjectile(root, scene, player, movement, map);  //find a way to add map to this mf
+                projectileShooting.SpawnDefaultProjectile(root, scene, player, movement, activeMap);  //find a way to add map to this mf
 
 
                 // enemy first, before any early return below
