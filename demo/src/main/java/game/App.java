@@ -11,6 +11,7 @@ import game.classes.maps.Map;
 import game.classes.maps.MapRenderer;
 import game.classes.movement.enemyMovements.EnemyNearestNeighbor;
 import game.classes.movement.playerMovements.MovementControlPlayer;
+import game.classes.playerInteractions.ProjectileShooting;
 import game.classes.sprites.ImageReading;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
@@ -50,6 +51,7 @@ public class App extends Application {
 
         // --- player ---
         Player player = new Player(100, 0, 0, sprite);
+        ProjectileShooting projectileShooting =  new ProjectileShooting();
         MovementControlPlayer movement = implementPlayer(player, activeMap);
         placeEntity(player, floorManager.getCenter(), 0, 0);
 
@@ -77,6 +79,8 @@ public class App extends Application {
             @Override
             public void handle(long now) {
                 speedText.setText(String.format("Speed = %.1f", movement.getSpeed()));
+                // projectileShooting.SpawnDefaultProjectile(root, scene, player, movement, map);  //find a way to add map to this mf
+
 
                 // enemy first, before any early return below
                 enemyMovement.enemyNearestNeighbor(enemy, player, activeMap);

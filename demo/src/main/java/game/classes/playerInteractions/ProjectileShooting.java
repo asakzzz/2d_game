@@ -45,6 +45,7 @@ public class ProjectileShooting {
                 projectile.setX_pos(player.getX_pos());
                 projectile.setY_pos(player.getY_pos());
                 root.getChildren().add(projectile.getImageView());
+                System.out.print("projectile");
 
                 new MovementControlProjectile(movement, map, root).MoveProjectile(projectile, xVector, yVector);
             }
