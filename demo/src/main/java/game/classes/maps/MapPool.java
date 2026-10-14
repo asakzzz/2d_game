@@ -19,8 +19,8 @@ public class MapPool {
     private int currentId = 0;
     private final Map<Integer, game.classes.maps.Map> maps = new HashMap<>();
 
-    public MapPool() {
-        getMapForFloor(1);
+    public MapPool(int floorNumber) {
+        getMapForFloor(floorNumber);
     }
 
     public int getCurrentId() {
@@ -29,7 +29,7 @@ public class MapPool {
 
     public final Map<Integer, game.classes.maps.Map> getMapForFloor (int floorNumber) {
         maps.clear();
-        File directory = new File(String.format("/src/main/resources/game/maps/floor%d", floorNumber));
+        File directory = new File(String.format("src/main/resources/game/maps/floor%d", floorNumber));
         if (!directory.exists() || !directory.isDirectory()) {
             throw new IllegalArgumentException("Map directory not found: " + directory.getAbsolutePath());
         }

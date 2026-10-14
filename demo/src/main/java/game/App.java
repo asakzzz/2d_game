@@ -3,21 +3,21 @@ package game;
 import java.io.IOException;
 
 import game.classes.entities.Player;
-import game.classes.maps.MapPool;
+import game.classes.floor.Direction;
+import game.classes.floor.FloorGenerator;
+import game.classes.floor.FloorManager;
+import game.classes.maps.Map;
+import game.classes.maps.MapRenderer;
 import game.classes.movement.MovementControlPlayer;
 import game.classes.sprites.ImageReading;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-/**
- * JavaFX App
- */
+
 public class App extends Application {
 
     private static Scene scene;
@@ -25,82 +25,84 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        this.root = new Pane();
+        root = new Pane();
         scene = new Scene(root, 1280, 720);
-        CreateMap map = new CreateMap();
-        MapPool pool = new MapPool();
+
+        // --- floor ---
+        FloorManager floorManager = new FloorManager();
+        floorManager.startFloor(1);
+
+        // --- active map ---
+        // MovementControlPlayer keeps a reference to ONE Map forever, so we give it
+        // this one and copy the current room's tiles into it on every room change.
+        Map activeMap = new Map(new int[FloorGenerator.ROWS][FloorGenerator.COLS]);
+        copyTiles(floorManager.getCurrentMap(), activeMap);
+
+        // room is always child index 0
+        root.getChildren().add(MapRenderer.render(activeMap));
+
+        // --- player ---
         Image sheet = new Image(App.class.getResourceAsStream("assets/knight.png"));
-        Image sprite = ImageReading.getFrame(sheet , 0,0,32,32);
+        Image sprite = ImageReading.getFrame(sheet, 0, 0, 32, 32);
         Player player = new Player(100, 0, 0, sprite);
+        MovementControlPlayer movement = implementPlayer(player, activeMap);
+        placePlayer(player, floorManager.getCenter());
 
+        // --- HUD ---
+        Text speedText = new Text();
+        speedText.setX(10);
+        speedText.setY(20);
+        root.getChildren().add(speedText);
 
-        root.getChildren().add(map.CreateCanva());
-        MovementControlPlayer mvnt = implementPlayer(player, map);
-        Text text = new Text();
-
-        text.setX(1700); 
-        text.setY(50);
-        root.getChildren().add(text);
-                
- 
         stage.setScene(scene);
-
         stage.show();
 
         new AnimationTimer() {
-            private boolean changed = false;
+            private boolean canChangeRoom = true;   // false until the player leaves the door tile
 
             @Override
             public void handle(long now) {
-                double pos_x = player.getX_pos();
-                double pos_y = player.getY_pos();
-                text.setText(String.format("Speed = %.1f", mvnt.getSpeed()));
+                speedText.setText(String.format("Speed = %.1f", movement.getSpeed()));
 
-                boolean playerOnDoor = map.isDoor(pos_x, pos_y);
-                boolean playerOnPreviousDoor = map.isPreviousDoor(pos_x, pos_y);
-
-                if (playerOnDoor == false && playerOnPreviousDoor == false) {
-                    changed = true;
+                Direction door = floorManager.getDoorAt(player.getX_pos(), player.getY_pos());
+                if (door == null) {
+                    canChangeRoom = true;
                     return;
                 }
-                if (changed == false) {
-                    return;
-                }
+                if (!canChangeRoom) return;
 
-                //need to make the player go to the next room instead of random one when going back to previous room
-                if (playerOnDoor) {
-                    changed = false;
-                    map.loadTIles(pool.getRandomMap());
-                    root.getChildren().set(0, map.CreateCanva());
-                } else if (playerOnPreviousDoor && pool.getPreviousId() != -1) {
-                    changed = false;
-                    map.loadTIles(pool.goBack());
-                    root.getChildren().set(0, map.CreateCanva());
+                if (floorManager.changeRoom(door) != null) {
+                    canChangeRoom = false;
+                    copyTiles(floorManager.getCurrentMap(), activeMap);
+                    root.getChildren().set(0, MapRenderer.render(activeMap));
+                    placePlayer(player, floorManager.getSpawnPosition(door));
                 }
-
             }
         }.start();
     }
 
-    //Put implementPlayer in another file
-    public MovementControlPlayer implementPlayer(Player player, CreateMap map) throws IOException {
+    /** Copies the tiles of one map into another (same dimensions). */
+    private void copyTiles(Map from, Map to) {
+        int[][] src = from.getTiles();
+        int[][] dst = to.getTiles();
+        for (int row = 0; row < src.length; row++) {
+            System.arraycopy(src[row], 0, dst[row], 0, src[row].length);
+        }
+    }
+
+    private MovementControlPlayer implementPlayer(Player player, Map map) throws IOException {
         MovementControlPlayer inputControl = new MovementControlPlayer(player, scene, map);
         inputControl.handleInput();
         root.getChildren().add(player.getImageView());
         return inputControl;
     }
 
-    static void setRoot(String fxml) throws IOException {
-        scene.setRoot(loadFXML(fxml));
-    }
-
-    private static Parent loadFXML(String fxml) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource(fxml + ".fxml"));
-        return fxmlLoader.load();
+    private void placePlayer(Player player, double[] pos) {
+        player.setX_pos((int)pos[0]);
+        player.setY_pos((int)pos[1]);
     }
 
     public static void main(String[] args) {
         launch();
     }
-
 }
