@@ -1,4 +1,4 @@
-package game.classes.movement;
+package game.classes.movement.playerMovements;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -63,7 +63,9 @@ public class MovementControlPlayer {
 
                 if (xVector < 0) {
                     player.setFacingLeft(true);
-                } else if (xVector > 0) {
+                } 
+                
+                if (xVector > 0) {
                     player.setFacingRight(true);
                 }
 

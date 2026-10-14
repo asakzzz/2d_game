@@ -4,8 +4,8 @@ import game.App;
 import game.classes.entities.Player;
 import game.classes.entities.Projectile;
 import game.classes.maps.CreateMap;
-import game.classes.movement.MovementControlPlayer;
-import game.classes.movement.MovementControlProjectile;
+import game.classes.movement.playerMovements.MovementControlPlayer;
+import game.classes.movement.projectileMovements.MovementControlProjectile;
 import game.classes.sprites.ImageReading;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
@@ -17,6 +17,15 @@ public class ProjectileShooting {
 
     private long lastshot = 0;
     private long cooldown = 300_000_000L;
+
+    /** This method spawns a projectile depending on the cooldown computed by the system time, the key pressed for the direction and the position of the player
+     *  It then calls the {@code MoveProjectile} method to move it.
+     * @param root The root of the window, meant to add or remove elements from it
+     * @param scene The scene where the player and projectile are
+     * @param player The player who shoots the projectile
+     * @param movement The movement controls of the player
+     * @param map The map where the scene takes place
+     */
 
     public void SpawnDefaultProjectile(Pane root, Scene scene, Player player, MovementControlPlayer movement, CreateMap map) {
 
@@ -37,7 +46,7 @@ public class ProjectileShooting {
                 projectile.setY_pos(player.getY_pos());
                 root.getChildren().add(projectile.getImageView());
 
-                new MovementControlProjectile(movement, map, root, scene).MoveProjectile(projectile, scene, xVector, yVector);
+                new MovementControlProjectile(movement, map, root).MoveProjectile(projectile, xVector, yVector);
             }
 
         }

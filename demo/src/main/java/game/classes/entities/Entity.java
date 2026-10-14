@@ -168,6 +168,11 @@ public abstract class Entity {
         return facingRight;
     }
 
+    /**
+     * 
+     * @return A rectangle the size of the sprite given to the entity, meant to be the hitbox
+     */
+
     public Rectangle getHitbox() {
 
         if (this.hitbox == null) {
@@ -184,9 +189,19 @@ public abstract class Entity {
 
     }
 
+    /**
+     * 
+     * @return The sprite's width
+     */
+
     public double getWidth() {
         return imageView.getBoundsInParent().getWidth() - 7;
     }
+
+    /**
+     * 
+     * @return The sprite's height
+     */
 
     public double getHeight() {
         return imageView.getBoundsInParent().getHeight() - 7;
