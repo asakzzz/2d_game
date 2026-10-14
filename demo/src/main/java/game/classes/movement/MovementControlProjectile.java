@@ -1,7 +1,7 @@
 package game.classes.movement;
 
 import game.classes.entities.Projectile;
-import game.classes.maps.CreateMap;
+import game.classes.maps.Map;
 import javafx.animation.AnimationTimer;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
@@ -12,10 +12,10 @@ public class MovementControlProjectile {
     private double yVector = 0;
 
     MovementControlPlayer movement;
-    CreateMap map;
+    Map map;
     Pane root;
 
-    public MovementControlProjectile(MovementControlPlayer movement, CreateMap map, Pane root, Scene scene) {
+    public MovementControlProjectile(MovementControlPlayer movement, Map map, Pane root, Scene scene) {
         this.movement = movement;
         this.map = map;
         this.root = root;

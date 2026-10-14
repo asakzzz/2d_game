@@ -16,6 +16,7 @@ import game.classes.sprites.AnimateSprite;
 import game.classes.sprites.ImageReading;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
+import javafx.application.star;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -24,7 +25,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-public class App extends Application {
+public class App<T> extends Application {
         scene = new Scene(root, 1280, 720);
 
         // --- floor ---
