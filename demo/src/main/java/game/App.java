@@ -2,6 +2,7 @@ package game;
 
 import java.io.IOException;
 
+import game.classes.entities.Enemy;
 import game.classes.entities.Player;
 import game.classes.floor.Direction;
 import game.classes.floor.FloorGenerator;
@@ -9,23 +10,21 @@ import game.classes.floor.FloorManager;
 import game.classes.maps.Map;
 import game.classes.maps.MapRenderer;
 import game.classes.movement.MovementControlPlayer;
+import game.classes.movement.MovementControlProjectile;
+import game.classes.playerInteractions.ProjectileShooting;
+import game.classes.sprites.AnimateSprite;
 import game.classes.sprites.ImageReading;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class App extends Application {
-
-    private static Scene scene;
-    private Pane root;
-
-    @Override
-    public void start(Stage stage) throws IOException {
-        root = new Pane();
         scene = new Scene(root, 1280, 720);
 
         // --- floor ---
@@ -93,6 +92,9 @@ public class App extends Application {
     private MovementControlPlayer implementPlayer(Player player, Map map) throws IOException {
         MovementControlPlayer inputControl = new MovementControlPlayer(player, scene, map);
         inputControl.handleInput();
+        ImageView view = player.getImageView();
+        view.setFitWidth(100);
+        view.setPreserveRatio(true);
         root.getChildren().add(player.getImageView());
         return inputControl;
     }

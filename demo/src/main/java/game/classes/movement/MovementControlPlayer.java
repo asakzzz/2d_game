@@ -48,70 +48,71 @@ public class MovementControlPlayer {
      * the maxSpeed caps it to avoid goind mach 20
      */
     public void handleInput() {
-        scene.setOnKeyPressed(KeyEvent -> keys.add(KeyEvent.getCode()));
-        scene.setOnKeyReleased(KeyEvent -> keys.remove(KeyEvent.getCode()));
+        scene.addEventHandler(KeyEvent.KEY_PRESSED, e -> keys.add(e.getCode()));
+        scene.addEventHandler(KeyEvent.KEY_RELEASED, e -> keys.remove(e.getCode()));
 
         new AnimationTimer() {
             @Override
             public void handle(long now) {
 
-                if (!keys.contains(KeyCode.D) && !keys.contains(KeyCode.Q)) {
+                double width = player.getWidth();
+                double height = player.getHeight();
+
+                int xVector = (keys.contains(KeyCode.D) ? 1 : 0) - (keys.contains(KeyCode.Q) ? 1 : 0);
+                int yVector = (keys.contains(KeyCode.S) ? 1 : 0) - (keys.contains(KeyCode.Z) ? 1 : 0);
+
+                if (xVector < 0) {
+                    player.setFacingLeft(true);
+                } else if (xVector > 0) {
+                    player.setFacingRight(true);
+                }
+
+                double len = Math.hypot(xVector, yVector);
+
+                if (len == 0) {
                     horizontalSpeed = 0;
-                }
-
-                if (!keys.contains(KeyCode.Z) && !keys.contains(KeyCode.S)) {
                     verticalSpeed = 0;
+                } else {
+                    horizontalSpeed = xVector / len * speed;
+                    verticalSpeed = yVector / len * speed;
                 }
 
-                if (keys.contains(KeyCode.D) && map.isWall(player.getX_pos() + 10, player.getY_pos()) == false) {
-                    if (horizontalSpeed >= maxSpeed) {
-                        player.setX_pos(player.getX_pos() + maxSpeed);
-                    } else {
-                        horizontalSpeed += ACCEL;
-                        player.setX_pos(player.getX_pos() + horizontalSpeed);
-
-                    }
-
-                }
-                if (keys.contains(KeyCode.Q) && map.isWall(player.getX_pos() - 10, player.getY_pos()) == false) {
-                    if (horizontalSpeed >= maxSpeed) {
-                        player.setX_pos(player.getX_pos() - maxSpeed);
-                    } else {
-                        horizontalSpeed += ACCEL;
-                        player.setX_pos(player.getX_pos() - horizontalSpeed);
-                    }
+                if (horizontalSpeed != 0 && !map.isWall(player.getX_pos() + horizontalSpeed, player.getY_pos(), width, height)) {
+                    player.setX_pos(player.getX_pos() + horizontalSpeed);
                 }
 
-                if (keys.contains(KeyCode.Z) && map.isWall(player.getX_pos(), player.getY_pos() - 10) == false) {
-                    if (verticalSpeed >= maxSpeed) {
-                        player.setY_pos(player.getY_pos() - maxSpeed);
-                    } else {
-                        verticalSpeed += ACCEL;
-                        player.setY_pos(player.getY_pos() - verticalSpeed);
-                    }
-                }
-
-                if (keys.contains(KeyCode.S) && map.isWall(player.getX_pos(), player.getY_pos() + 10) == false) {
-                    if (verticalSpeed >= maxSpeed) {
-                        player.setY_pos(player.getY_pos() + maxSpeed);
-                    } else {
-                        verticalSpeed += ACCEL;
-                        player.setY_pos(player.getY_pos() + verticalSpeed);
-                    }
-                }
-
-                double total = horizontalSpeed + verticalSpeed;
-                if (total > maxSpeed) {
-                    horizontalSpeed = 4;
-                    verticalSpeed = 4;
+                if (verticalSpeed != 0 && !map.isWall(player.getX_pos(), player.getY_pos() + verticalSpeed, width, height)) {
+                    player.setY_pos(player.getY_pos() + verticalSpeed);
                 }
 
             }
-        }.start();
+        }
+                .start();
     }
 
+    /**
+     *
+     * @return a double, the total speed of the player
+     */
     public double getSpeed() {
         return Math.hypot(horizontalSpeed, verticalSpeed);
+    }
+
+    public double getHorizontalSpeed() {
+        return horizontalSpeed;
+    }
+
+    public double getVerticalSpeed() {
+        return verticalSpeed;
+    }
+
+    /**
+     *
+     * @return a boolean, checking if the player is moving or not
+     */
+    public boolean isMoving() {
+
+        return this.getSpeed() > 0;
     }
 
 }
