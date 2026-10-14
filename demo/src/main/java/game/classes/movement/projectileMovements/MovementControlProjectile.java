@@ -1,8 +1,7 @@
 package game.classes.movement.projectileMovements;
 
 import game.classes.entities.Projectile;
-import game.classes.maps.CreateMap;
-import game.classes.movement.playerMovements.MovementControlPlayer;
+import game.classes.maps.Map;
 import javafx.animation.AnimationTimer;
 import javafx.scene.layout.Pane;
 
@@ -12,7 +11,7 @@ public class MovementControlProjectile {
     private double yVector = 0;
 
     MovementControlPlayer movement;
-    CreateMap map;
+    Map map;
     Pane root;
 
     /** This constructors allows each projectile to move independently from each other
