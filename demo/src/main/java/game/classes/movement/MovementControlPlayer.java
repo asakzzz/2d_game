@@ -4,11 +4,10 @@ import java.util.HashSet;
 import java.util.Set;
 
 import game.classes.entities.Player;
-import game.classes.maps.CreateMap;
+import game.classes.maps.Map;
 import javafx.animation.AnimationTimer;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 
 /**
  *
@@ -19,10 +18,11 @@ public class MovementControlPlayer {
     private final Player player;
     private final Scene scene;
     private final Set<KeyCode> keys = new HashSet<>();
-    private final CreateMap map;
-    private double horizontalSpeed = 0;
-    private double verticalSpeed = 0;
-    private final double speed = 0.8;
+    private final Map map;
+    private int horizontalSpeed = 0;
+    private int verticalSpeed = 0;
+    private final int ACCEL = 1;
+    private final int maxSpeed = 6;
 
     /**
      * This creates the class MovementInputControls, which we will call later to
@@ -31,7 +31,7 @@ public class MovementControlPlayer {
      * @param player The player we want to move
      * @param scene The scene where the player is
      */
-    public MovementControlPlayer(Player player, Scene scene, CreateMap map) {
+    public MovementControlPlayer(Player player, Scene scene, Map map) {
         this.player = player;
         this.scene = scene;
         this.map = map;

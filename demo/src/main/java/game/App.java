@@ -4,9 +4,11 @@ import java.io.IOException;
 
 import game.classes.entities.Enemy;
 import game.classes.entities.Player;
-import game.classes.maps.CreateMap;
-import game.classes.maps.MapPool;
-import game.classes.movement.Collision;
+import game.classes.floor.Direction;
+import game.classes.floor.FloorGenerator;
+import game.classes.floor.FloorManager;
+import game.classes.maps.Map;
+import game.classes.maps.MapRenderer;
 import game.classes.movement.MovementControlPlayer;
 import game.classes.movement.MovementControlProjectile;
 import game.classes.playerInteractions.ProjectileShooting;
@@ -14,8 +16,6 @@ import game.classes.sprites.AnimateSprite;
 import game.classes.sprites.ImageReading;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -24,127 +24,72 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-/**
- * JavaFX App
- */
-public class App<T> extends Application {
-
-    private static Scene scene;
-    private Pane root;
-
-    @Override
-    public void start(Stage stage) throws IOException {
-        this.root = new Pane();
+public class App extends Application {
         scene = new Scene(root, 1280, 720);
-        CreateMap map = new CreateMap();
-        MapPool pool = new MapPool();
+
+        // --- floor ---
+        FloorManager floorManager = new FloorManager();
+        floorManager.startFloor(1);
+
+        // --- active map ---
+        // MovementControlPlayer keeps a reference to ONE Map forever, so we give it
+        // this one and copy the current room's tiles into it on every room change.
+        Map activeMap = new Map(new int[FloorGenerator.ROWS][FloorGenerator.COLS]);
+        copyTiles(floorManager.getCurrentMap(), activeMap);
+
+        // room is always child index 0
+        root.getChildren().add(MapRenderer.render(activeMap));
+
+        // --- player ---
         Image sheet = new Image(App.class.getResourceAsStream("assets/knight.png"));
         Image sprite = ImageReading.getFrame(sheet, 0, 0, 32, 32);
         Player player = new Player(100, 0, 0, sprite);
-        Enemy enemy = new Enemy(10, 0, 0, sprite);
+        MovementControlPlayer movement = implementPlayer(player, activeMap);
+        placePlayer(player, floorManager.getCenter());
 
-        //initialize player in another file
-        root.getChildren().add(map.CreateCanva());
-        MovementControlPlayer mvnt = implementPlayer(player, map);
-        ProjectileShooting projectileShooting = new ProjectileShooting();
-        projectileShooting.SpawnDefaultProjectile(root, scene, player, mvnt , map);
-        MovementControlProjectile movementControlProjectile = new MovementControlProjectile(mvnt, map, root , scene);
-        Collision collision = new Collision<T>();
-
-        AnimateSprite animation = new AnimateSprite(8);
-        ImageReading imageReading = new ImageReading();
-        Image[] framesRunning = imageReading.getAnimation(sheet, 0, 2, 8, 32, 32);
-        Image[] framesIdle = imageReading.getAnimation(sheet, 0, 0, 4, 32, 32);
-
-        Text text = new Text();
-        Text text2 = new Text();
-        Text text3 = new Text();
-
-        text.setX(1700);
-        text.setY(50);
-        root.getChildren().add(text);
-
-        text2.setX(1700);
-        text2.setY(80);
-        root.getChildren().add(text2);
-
-        text3.setX(1700);
-        text3.setY(110);
-        root.getChildren().add(text3);
-
-        //temporary
-        Rectangle playerHitbox = player.getHitbox();
-        Rectangle enemyHitbox = enemy.getHitbox();
-
-        playerHitbox.setFill(javafx.scene.paint.Color.TRANSPARENT);
-        playerHitbox.setStroke(javafx.scene.paint.Color.GREEN);
-        playerHitbox.setStrokeWidth(2);
-
-        enemyHitbox.setFill(javafx.scene.paint.Color.TRANSPARENT);
-        enemyHitbox.setStroke(javafx.scene.paint.Color.GREEN);
-        enemyHitbox.setStrokeWidth(2);
-
-// Add the hitbox visual to the scene root
-        root.getChildren().add(playerHitbox);
-        root.getChildren().add(enemyHitbox);
+        // --- HUD ---
+        Text speedText = new Text();
+        speedText.setX(10);
+        speedText.setY(20);
+        root.getChildren().add(speedText);
 
         stage.setScene(scene);
-
         stage.show();
 
         new AnimationTimer() {
-            private boolean changed = false;
+            private boolean canChangeRoom = true;   // false until the player leaves the door tile
 
             @Override
             public void handle(long now) {
-                double pos_x = player.getX_pos();
-                double pos_y = player.getY_pos();
-                double width = player.getWidth();
-                double height = player.getHeight();
-                player.getHitbox();
-                enemy.getHitbox();
+                speedText.setText(String.format("Speed = %.1f", movement.getSpeed()));
 
-                text.setText(String.format("Speed = %.1f", mvnt.getSpeed()));
-                text2.setText(String.format("isMoving = " + mvnt.isMoving()));
-                text3.setText(String.format("isColliding = " + collision.CollidingHitbox(player, enemy)));
-
-                boolean playerOnDoor = map.isDoor(pos_x, pos_y, width, height);
-                boolean playerOnPreviousDoor = map.isPreviousDoor(pos_x, pos_y, width, height);
-
-                //can make a file outta this
-                if (mvnt.isMoving()) {
-                    animation.animate(player, framesRunning, now);
-                } else {
-                    animation.animate(player, framesIdle, now);
-                }
-
-                //can make another file outta this
-                if (playerOnDoor == false && playerOnPreviousDoor == false) {
-                    changed = true;
+                Direction door = floorManager.getDoorAt(player.getX_pos(), player.getY_pos());
+                if (door == null) {
+                    canChangeRoom = true;
                     return;
                 }
-                if (changed == false) {
-                    return;
+                if (!canChangeRoom) return;
+
+                if (floorManager.changeRoom(door) != null) {
+                    canChangeRoom = false;
+                    copyTiles(floorManager.getCurrentMap(), activeMap);
+                    root.getChildren().set(0, MapRenderer.render(activeMap));
+                    placePlayer(player, floorManager.getSpawnPosition(door));
                 }
-
-                if (playerOnDoor) {
-                    changed = false;
-                    map.loadTIles(pool.getRandomMap());
-                    root.getChildren().set(0, map.CreateCanva());
-                } else if (playerOnPreviousDoor && pool.getPreviousId() != -1) {
-                    changed = false;
-                    map.loadTIles(pool.goBack());
-                    root.getChildren().set(0, map.CreateCanva());
-                }
-
-                
-
             }
         }.start();
     }
 
-    //Put implementPlayer in another file
-    public MovementControlPlayer implementPlayer(Player player, CreateMap map) throws IOException {
+    /** Copies the tiles of one map into another (same dimensions). */
+    private void copyTiles(Map from, Map to) {
+        int[][] src = from.getTiles();
+        int[][] dst = to.getTiles();
+        for (int row = 0; row < src.length; row++) {
+            System.arraycopy(src[row], 0, dst[row], 0, src[row].length);
+        }
+    }
+
+    private MovementControlPlayer implementPlayer(Player player, Map map) throws IOException {
         MovementControlPlayer inputControl = new MovementControlPlayer(player, scene, map);
         inputControl.handleInput();
         ImageView view = player.getImageView();
@@ -154,17 +99,12 @@ public class App<T> extends Application {
         return inputControl;
     }
 
-    static void setRoot(String fxml) throws IOException {
-        scene.setRoot(loadFXML(fxml));
-    }
-
-    private static Parent loadFXML(String fxml) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource(fxml + ".fxml"));
-        return fxmlLoader.load();
+    private void placePlayer(Player player, double[] pos) {
+        player.setX_pos((int)pos[0]);
+        player.setY_pos((int)pos[1]);
     }
 
     public static void main(String[] args) {
         launch();
     }
-
 }
