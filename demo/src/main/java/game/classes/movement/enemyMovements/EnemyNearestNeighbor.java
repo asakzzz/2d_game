@@ -2,7 +2,7 @@ package game.classes.movement.enemyMovements;
 
 import game.classes.entities.Enemy;
 import game.classes.entities.Player;
-import game.classes.maps.CreateMap;
+import game.classes.maps.Map;
 
 public class EnemyNearestNeighbor {
 
@@ -16,7 +16,7 @@ public class EnemyNearestNeighbor {
      * @param map the map where the scene takes place
      */
 
-    public void enemyNearestNeighbor(Enemy enemy, Player player, CreateMap map) {
+    public void enemyNearestNeighbor(Enemy enemy, Player player, Map map) {
 
         double xVector = player.getX_pos() - enemy.getX_pos();
         double yVector = player.getY_pos() - enemy.getY_pos();

@@ -2,6 +2,7 @@ package game.classes.movement.projectileMovements;
 
 import game.classes.entities.Projectile;
 import game.classes.maps.Map;
+import game.classes.movement.playerMovements.MovementControlPlayer;
 import javafx.animation.AnimationTimer;
 import javafx.scene.layout.Pane;
 
@@ -21,7 +22,7 @@ public class MovementControlProjectile {
      * @param root The root to add elements in the window
      */
 
-    public MovementControlProjectile(MovementControlPlayer movement, CreateMap map, Pane root) {
+    public MovementControlProjectile(MovementControlPlayer movement, Map map, Pane root) {
         this.movement = movement;
         this.map = map;
         this.root = root;

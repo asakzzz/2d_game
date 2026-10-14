@@ -8,6 +8,7 @@ import game.classes.maps.Map;
 import javafx.animation.AnimationTimer;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 
 /**
  *
@@ -19,10 +20,9 @@ public class MovementControlPlayer {
     private final Scene scene;
     private final Set<KeyCode> keys = new HashSet<>();
     private final Map map;
-    private int horizontalSpeed = 0;
-    private int verticalSpeed = 0;
-    private final int ACCEL = 1;
-    private final int maxSpeed = 6;
+    private double horizontalSpeed = 0;
+    private double verticalSpeed = 0;
+    private final double speed = 0.8;
 
     /**
      * This creates the class MovementInputControls, which we will call later to
@@ -63,9 +63,7 @@ public class MovementControlPlayer {
 
                 if (xVector < 0) {
                     player.setFacingLeft(true);
-                } 
-                
-                if (xVector > 0) {
+                } else if (xVector > 0) {
                     player.setFacingRight(true);
                 }
 

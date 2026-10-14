@@ -4,7 +4,7 @@ import java.util.Random;
 
 import game.classes.entities.Enemy;
 import game.classes.entities.Player;
-import game.classes.maps.CreateMap;
+import game.classes.maps.Map;
 
 public class EnemyRandomMovement {
 
@@ -38,7 +38,7 @@ public class EnemyRandomMovement {
      * @param now The system time when the method is called
      */
 
-    public void enemyRandomMovement(Enemy enemy, Player player, CreateMap map, long now) {
+    public void enemyRandomMovement(Enemy enemy, Player player, Map map, long now) {
         //Comments cause I struggle with math
 
         double enemyX = enemy.getX_pos(); //x1
