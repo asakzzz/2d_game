@@ -3,7 +3,7 @@ package game.classes.playerInteractions;
 import game.App;
 import game.classes.entities.Player;
 import game.classes.entities.Projectile;
-import game.classes.maps.CreateMap;
+import game.classes.maps.Map;
 import game.classes.movement.playerMovements.MovementControlPlayer;
 import game.classes.movement.projectileMovements.MovementControlProjectile;
 import game.classes.sprites.ImageReading;
@@ -27,7 +27,7 @@ public class ProjectileShooting {
      * @param map The map where the scene takes place
      */
 
-    public void SpawnDefaultProjectile(Pane root, Scene scene, Player player, MovementControlPlayer movement, CreateMap map) {
+    public void SpawnDefaultProjectile(Pane root, Scene scene, Player player, MovementControlPlayer movement, Map map) {
 
         //for testing purposes
         Image sheet = new Image(App.class.getResourceAsStream("assets/knight.png"));

@@ -2,7 +2,7 @@ package game.classes.movement.enemyMovements;
 
 import game.classes.entities.Enemy;
 import game.classes.entities.Player;
-import game.classes.maps.CreateMap;
+import game.classes.maps.Map;
 
 public class EnemyFleePlayer {
     private double speed = 0.4;
@@ -15,7 +15,7 @@ public class EnemyFleePlayer {
      * @param map the map where the scene takes place
      */
 
-    public void enemyFleePlayer(Enemy enemy, Player player, CreateMap map) {
+    public void enemyFleePlayer(Enemy enemy, Player player, Map map) {
 
         double xVector = enemy.getX_pos() - player.getX_pos();
         double yVector = enemy.getY_pos() - player.getY_pos();
