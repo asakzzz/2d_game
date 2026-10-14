@@ -8,7 +8,7 @@ import javafx.scene.image.Image;
 public class AnimateSprite<T> {
 
     private final long frameDuration;
-    private int current = 0;
+    private int current = 0; 
     private long lastSwitch = 0;
 
     /**
