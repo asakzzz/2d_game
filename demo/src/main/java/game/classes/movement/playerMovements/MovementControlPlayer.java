@@ -85,6 +85,14 @@ public class MovementControlPlayer {
                     player.setY_pos(player.getY_pos() + verticalSpeed);
                 }
 
+                // if (map.isWall(player.getX_pos(), player.getY_pos() + verticalSpeed, width, height)) {
+                //     System.out.println("doorY");
+                // }
+
+                // if (map.isWall(player.getX_pos() + horizontalSpeed, player.getY_pos(), width, height)) {
+                //     System.out.println("doorX");
+                // }
+
             }
         }
                 .start();

@@ -195,7 +195,7 @@ public abstract class Entity {
      */
 
     public double getWidth() {
-        return imageView.getBoundsInParent().getWidth() - 7;
+        return imageView.getBoundsInParent().getWidth();
     }
 
     /**
@@ -204,7 +204,7 @@ public abstract class Entity {
      */
 
     public double getHeight() {
-        return imageView.getBoundsInParent().getHeight() - 7;
+        return imageView.getBoundsInParent().getHeight();
     }
 
 }
