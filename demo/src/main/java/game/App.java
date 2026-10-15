@@ -7,6 +7,7 @@ import game.classes.entities.Player;
 import game.classes.floor.Direction;
 import game.classes.floor.FloorGenerator;
 import game.classes.floor.FloorManager;
+import game.classes.graphical_user_inteface.MainMenu;
 import game.classes.maps.Map;
 import game.classes.maps.MapRenderer;
 import game.classes.movement.enemyMovements.EnemyNearestNeighbor;
@@ -29,11 +30,26 @@ public class App extends Application {
     private static Scene scene;
     private Pane root;
 
+    private MainMenu mainMenu = new MainMenu();
+
     @Override
     public void start(Stage stage) throws IOException {
         this.root = new Pane();
         scene = new Scene(root, 1280, 720);
+        stage.setScene(scene);
+        stage.show();
 
+        mainMenu.drawMainMenu(root, () -> {
+            try {
+                startGame(stage);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+
+    }
+
+    private void startGame(Stage stage) throws IOException {
         // --- floor ---
         FloorManager floorManager = new FloorManager();
         floorManager.startFloor(1);
@@ -51,8 +67,10 @@ public class App extends Application {
 
         // --- player ---
         Player player = new Player(100, 0, 0, sprite);
-        ProjectileShooting projectileShooting =  new ProjectileShooting();
-        MovementControlPlayer movement = implementPlayer(player, activeMap);
+
+        MovementControlPlayer movement = implementPlayer(player, activeMap);        
+        ProjectileShooting projectileShooting = new ProjectileShooting();
+        projectileShooting.SpawnDefaultProjectile(root, scene, player, movement, activeMap);  //find a way to add map to this mf
         placeEntity(player, floorManager.getCenter(), 0, 0);
 
         // --- enemy ---
@@ -62,7 +80,7 @@ public class App extends Application {
         enemyView.setFitWidth(100);
         enemyView.setPreserveRatio(true);
         root.getChildren().add(enemyView);
-        placeEntity(enemy, floorManager.getCenter(), 200, 0);  
+        placeEntity(enemy, floorManager.getCenter(), 200, 0);
 
         // --- HUD (added last so it draws on top) ---
         Text speedText = new Text();
@@ -79,8 +97,6 @@ public class App extends Application {
             @Override
             public void handle(long now) {
                 speedText.setText(String.format("Speed = %.1f", movement.getSpeed()));
-                projectileShooting.SpawnDefaultProjectile(root, scene, player, movement, activeMap);  //find a way to add map to this mf
-
 
                 // enemy first, before any early return below
                 enemyMovement.enemyNearestNeighbor(enemy, player, activeMap);
