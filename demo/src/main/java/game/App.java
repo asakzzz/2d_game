@@ -86,7 +86,7 @@ public class App extends Application {
         Enemy enemy = new Enemy(10, 0, 0, sprite);
         EnemyNearestNeighbor enemyMovement = new EnemyNearestNeighbor();
         ImageView enemyView = enemy.getImageView();
-        // enemyView.setFitWidth(100);
+        enemyView.setFitWidth(60);
         enemyView.setPreserveRatio(true);
         root.getChildren().add(enemyView);
         placeEntity(enemy, floorManager.getCenter(), 200, 0);
@@ -143,7 +143,7 @@ public class App extends Application {
         MovementControlPlayer inputControl = new MovementControlPlayer(player, scene, map);
         inputControl.handleInput();
         ImageView view = player.getImageView();
-        // view.setFitWidth(100);
+        view.setFitWidth(50);
         view.setPreserveRatio(true);
         root.getChildren().add(view);
         return inputControl;
