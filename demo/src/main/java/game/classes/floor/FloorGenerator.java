@@ -122,6 +122,11 @@ public class FloorGenerator {
                 tiles[cell[0]][cell[1]] = tile;
             }
         }
+        // for (int []row : tiles) {
+        //     for (int i : row) {
+        //         System.out.println(i);
+        //     }
+        // }
         return new Map(tiles);
     }
 

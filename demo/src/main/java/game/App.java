@@ -22,6 +22,7 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
@@ -68,7 +69,15 @@ public class App extends Application {
         // --- player ---
         Player player = new Player(100, 0, 0, sprite);
 
-        MovementControlPlayer movement = implementPlayer(player, activeMap);        
+        Rectangle playerHitbox = player.getHitbox();
+
+        playerHitbox.setFill(javafx.scene.paint.Color.TRANSPARENT);
+        playerHitbox.setStroke(javafx.scene.paint.Color.GREEN);
+        playerHitbox.setStrokeWidth(2);
+
+        root.getChildren().add(playerHitbox);
+
+        MovementControlPlayer movement = implementPlayer(player, activeMap);
         ProjectileShooting projectileShooting = new ProjectileShooting();
         projectileShooting.SpawnDefaultProjectile(root, scene, player, movement, activeMap);  //find a way to add map to this mf
         placeEntity(player, floorManager.getCenter(), 0, 0);
@@ -77,7 +86,7 @@ public class App extends Application {
         Enemy enemy = new Enemy(10, 0, 0, sprite);
         EnemyNearestNeighbor enemyMovement = new EnemyNearestNeighbor();
         ImageView enemyView = enemy.getImageView();
-        enemyView.setFitWidth(100);
+        // enemyView.setFitWidth(100);
         enemyView.setPreserveRatio(true);
         root.getChildren().add(enemyView);
         placeEntity(enemy, floorManager.getCenter(), 200, 0);
@@ -97,6 +106,7 @@ public class App extends Application {
             @Override
             public void handle(long now) {
                 speedText.setText(String.format("Speed = %.1f", movement.getSpeed()));
+                player.getHitbox();
 
                 // enemy first, before any early return below
                 enemyMovement.enemyNearestNeighbor(enemy, player, activeMap);
@@ -133,7 +143,7 @@ public class App extends Application {
         MovementControlPlayer inputControl = new MovementControlPlayer(player, scene, map);
         inputControl.handleInput();
         ImageView view = player.getImageView();
-        view.setFitWidth(100);
+        // view.setFitWidth(100);
         view.setPreserveRatio(true);
         root.getChildren().add(view);
         return inputControl;
