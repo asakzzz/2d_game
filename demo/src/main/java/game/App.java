@@ -13,6 +13,7 @@ import game.classes.floor.FloorManager;
 import game.classes.graphical_user_inteface.MainMenu;
 import game.classes.healthCare.DealDamage;
 import game.classes.healthCare.KillEntity;
+import game.classes.graphical_user_inteface.GameViewport;
 import game.classes.maps.Map;
 import game.classes.maps.MapRenderer;
 import game.classes.movement.enemyMovements.EnemyNearestNeighbor;
@@ -22,12 +23,11 @@ import game.classes.playerInteractions.ProjectileShooting;
 import game.classes.sprites.ImageReading;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -37,22 +37,13 @@ public class App<T> extends Application {
     private static Scene scene;
     private Pane root;
 
-    private MainMenu mainMenu = new MainMenu();
-
     @Override
     public void start(Stage stage) throws IOException {
-        this.root = new Pane();
-        scene = new Scene(root, 1280, 720);
-        stage.setScene(scene);
-        stage.show();
-
-        mainMenu.drawMainMenu(root, () -> {
-            try {
-                startGame(stage);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        });
+        GameViewport viewport = new GameViewport(
+                FloorGenerator.COLS * Map.getTileSize(),
+                FloorGenerator.ROWS * Map.getTileSize());
+        this.root = viewport.getWorld(); // everything else keeps adding to root
+        scene = new Scene(viewport.getRoot(), 1280, 720);
 
     }
 
@@ -93,6 +84,9 @@ public class App<T> extends Application {
         MovementControlPlayer movement = implementPlayer(player, activeMap);
         ProjectileShooting projectileShooting = new ProjectileShooting();
         projectileShooting.SpawnDefaultProjectile(root, scene, player, movement, activeMap, playerProjectile);  //find a way to add map to this mf
+        Player player = new Player(100, 0, 0, sprite);
+        ProjectileShooting projectileShooting = new ProjectileShooting();
+        MovementControlPlayer movement = implementPlayer(player, activeMap);
         placeEntity(player, floorManager.getCenter(), 0, 0);
 
         // --- enemy ---
@@ -101,10 +95,17 @@ public class App<T> extends Application {
         EnemyRandomMovement enemyRandomMovement = new EnemyRandomMovement();
         EnemyShooting enemyShooting = new EnemyShooting();
         ImageView enemyView = enemy.getImageView();
-        enemyView.setFitWidth(60);
+        enemyView.setFitWidth(100);
         enemyView.setPreserveRatio(true);
         root.getChildren().add(enemyView);
         placeEntity(enemy, floorManager.getCenter(), 200, 0);
+
+        // --- debug ---
+        Rectangle playerBox = new Rectangle(player.getWidth(), player.getHeight());
+        playerBox.setFill(Color.TRANSPARENT);
+        playerBox.setStroke(Color.RED);
+        playerBox.setStrokeWidth(2);
+        root.getChildren().add(playerBox);
 
         // --- HUD (added last so it draws on top) ---
         Text speedText = new Text();
@@ -113,6 +114,7 @@ public class App<T> extends Application {
         root.getChildren().add(speedText);
 
         stage.setScene(scene);
+        stage.setFullScreen(true);
         stage.show();
 
         new AnimationTimer() {
@@ -126,7 +128,9 @@ public class App<T> extends Application {
                     return;
                 }
                 speedText.setText(String.format("Speed = %.1f", movement.getSpeed()));
-                player.getHitbox();
+                projectileShooting.SpawnDefaultProjectile(root, scene, player, movement, activeMap); // find a way to
+                                                                                                     // add map to this
+                                                                                                     // mf
 
                 // enemy first, before any early return below
                 // enemyMovement.enemyNearestNeighbor(enemy, player, activeMap);
@@ -137,7 +141,8 @@ public class App<T> extends Application {
 
                 dealDamage.dealDamage(player, enemy, playerProjectile, enemyProjectiles, root);
 
-                Direction door = floorManager.getDoorAt(player.getX_pos(), player.getY_pos());
+                Direction door = floorManager.getDoorDirection(activeMap, player.getX_pos(), player.getY_pos(),
+                        player.getWidth(), player.getHeight());
                 if (door == null) {
                     canChangeRoom = true;
                     return;
@@ -150,7 +155,7 @@ public class App<T> extends Application {
                     canChangeRoom = false;
                     copyTiles(floorManager.getCurrentMap(), activeMap);
                     root.getChildren().set(0, MapRenderer.render(activeMap));
-                    placePlayer(player, floorManager.getSpawnPosition(door));
+                    placePlayer(player, floorManager.getSpawnPosition(door, player.getWidth(), player.getHeight()));
                     placeEntity(enemy, floorManager.getCenter(), 0, 0);
                 }
             }
@@ -176,22 +181,13 @@ public class App<T> extends Application {
     }
 
     private void placePlayer(Player player, double[] pos) {
-        player.setX_pos(pos[0]);     // setters take double now, no (int) cast needed
+        player.setX_pos(pos[0]);
         player.setY_pos(pos[1]);
     }
 
     private void placeEntity(game.classes.entities.Entity e, double[] pos, double offsetX, double offsetY) {
         e.setX_pos(pos[0] + offsetX);
         e.setY_pos(pos[1] + offsetY);
-    }
-
-    static void setRoot(String fxml) throws IOException {
-        scene.setRoot(loadFXML(fxml));
-    }
-
-    private static Parent loadFXML(String fxml) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource(fxml + ".fxml"));
-        return fxmlLoader.load();
     }
 
     public static void main(String[] args) {
