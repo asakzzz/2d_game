@@ -10,6 +10,7 @@ public class MovementControlProjectile {
 
     private double xVector = 0;
     private double yVector = 0;
+    private double speed = 0.8;
 
     MovementControlPlayer movement;
     Map map;
@@ -39,8 +40,8 @@ public class MovementControlProjectile {
     public void MoveProjectile(Projectile projectile, double directionX, double directionY) {
 
         double len = Math.hypot(directionX, directionY);
-        xVector = directionX / len * 3;
-        yVector = directionY / len * 3;
+        xVector = directionX / len * speed;
+        yVector = directionY / len * speed;
 
         new AnimationTimer() {
             @Override

@@ -6,7 +6,7 @@ import game.classes.maps.Map;
 
 public class EnemyNearestNeighbor {
 
-    private double speed = 0.4;
+    private double speed = 0.3;
 
     /** This method makes the enemy chase the player, calculating the distance between them.
      * It checks if the enemy is on the player, if not it moves the enemy towards it. 

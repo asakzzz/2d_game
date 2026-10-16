@@ -3,6 +3,7 @@ package game.classes.entities;
 import game.classes.inventory.Inventory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
 
 /**
@@ -23,6 +24,8 @@ public abstract class Entity {
     protected boolean facingLeft;
     protected boolean facingRight;
     protected Rectangle hitbox;
+    protected boolean alive = true;
+    protected Pane root;
 
     /**
      * Constructs a new {@code Entity} with three parameters {@code hp, def} and
@@ -36,15 +39,17 @@ public abstract class Entity {
      * initialized upon creating an entity
      * @param image The sprite of the entity, used to render it in the game
      */
-    public Entity(int hp, int def, int mana, Image image) {
+    public Entity(int hp, int def, int mana, Image image , Pane root) {
         this.Hp = hp;
         this.Def = def;
         this.Mana = mana;
         this.inventory = new Inventory();
         this.image = image;
         this.imageView = new ImageView(image);
+        this.root = root;
         x_pos = 0;
         y_pos = 0;
+        alive = true;
 
     }
 
@@ -54,6 +59,28 @@ public abstract class Entity {
      */
     public int getHp() {
         return Hp;
+    }
+
+    public void decreaseHpSoft() {
+        this.Hp -= 1;
+    }
+
+    public void decreaseHpHard() {
+        this.Hp -= 2;
+    }
+
+    public void kill() {
+        this.alive = false;
+
+        root.getChildren().remove(imageView);
+        if (this.getHitbox() != null) {
+            root.getChildren().remove(hitbox);
+        }
+
+    }
+
+    public boolean isAlive() {
+        return this.alive;
     }
 
     /**
@@ -169,10 +196,10 @@ public abstract class Entity {
     }
 
     /**
-     * 
-     * @return A rectangle the size of the sprite given to the entity, meant to be the hitbox
+     *
+     * @return A rectangle the size of the sprite given to the entity, meant to
+     * be the hitbox
      */
-
     public Rectangle getHitbox() {
 
         if (this.hitbox == null) {
@@ -190,19 +217,17 @@ public abstract class Entity {
     }
 
     /**
-     * 
+     *
      * @return The sprite's width
      */
-
     public double getWidth() {
         return imageView.getBoundsInParent().getWidth();
     }
 
     /**
-     * 
+     *
      * @return The sprite's height
      */
-
     public double getHeight() {
         return imageView.getBoundsInParent().getHeight();
     }

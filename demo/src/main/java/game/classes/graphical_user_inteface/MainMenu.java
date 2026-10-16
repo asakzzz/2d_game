@@ -29,14 +29,12 @@ public class MainMenu {
         button1.setStyle("-fx-background-color: transparent; -fx-padding: 0;");
         button1.setScaleX(0.9);
         button1.setScaleY(0.9);
-        
+
         Button button2 = new Button();
         button2.setGraphic(iw2);
         button2.setStyle("-fx-background-color: transparent; -fx-padding: 0;");
         button2.setScaleX(0.7);
         button2.setScaleY(0.7);
-
-
 
         buttonSet.add(button1);
         buttonSet.add(button2);
@@ -49,8 +47,9 @@ public class MainMenu {
 
         button1.setOnAction(e -> {
             root.getChildren().remove(menu);
-            onPlay.run();
             e.consume();
+            onPlay.run();
+
         });
 
         button2.setOnAction(e -> {
@@ -64,12 +63,14 @@ public class MainMenu {
             });
             b.addEventHandler(KeyEvent.KEY_PRESSED, e -> {
                 if (e.getCode() == KeyCode.ENTER) {
-                    onPlay.run();
+                    b.fire();
+                    e.consume();
                 }
             });
         }
 
         menu.getChildren().addAll(button1, button2);
+        button1.requestFocus();
 
         root.getChildren().add(menu);
 

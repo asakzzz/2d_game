@@ -1,16 +1,22 @@
 package game;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
+import game.classes.enemyShooting.EnemyShooting;
 import game.classes.entities.Enemy;
 import game.classes.entities.Player;
+import game.classes.entities.Projectile;
 import game.classes.floor.Direction;
 import game.classes.floor.FloorGenerator;
 import game.classes.floor.FloorManager;
 import game.classes.graphical_user_inteface.MainMenu;
+import game.classes.healthCare.DealDamage;
+import game.classes.healthCare.KillEntity;
 import game.classes.maps.Map;
 import game.classes.maps.MapRenderer;
 import game.classes.movement.enemyMovements.EnemyNearestNeighbor;
+import game.classes.movement.enemyMovements.EnemyRandomMovement;
 import game.classes.movement.playerMovements.MovementControlPlayer;
 import game.classes.playerInteractions.ProjectileShooting;
 import game.classes.sprites.ImageReading;
@@ -26,7 +32,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-public class App extends Application {
+public class App<T> extends Application {
 
     private static Scene scene;
     private Pane root;
@@ -51,6 +57,9 @@ public class App extends Application {
     }
 
     private void startGame(Stage stage) throws IOException {
+        ArrayList<Projectile> playerProjectile = new ArrayList<Projectile>();
+        ArrayList<Projectile> enemyProjectiles = new ArrayList<Projectile>();
+        System.out.println("startGame called");
         // --- floor ---
         FloorManager floorManager = new FloorManager();
         floorManager.startFloor(1);
@@ -67,9 +76,13 @@ public class App extends Application {
         Image sprite = ImageReading.getFrame(sheet, 0, 0, 32, 32);
 
         // --- player ---
-        Player player = new Player(100, 0, 0, sprite);
+        Player player = new Player(5, 0, 0, sprite, root);
 
         Rectangle playerHitbox = player.getHitbox();
+
+        // --- Damage ---
+        DealDamage dealDamage = new DealDamage();
+        KillEntity killEntity = new KillEntity<T>();
 
         playerHitbox.setFill(javafx.scene.paint.Color.TRANSPARENT);
         playerHitbox.setStroke(javafx.scene.paint.Color.GREEN);
@@ -79,12 +92,14 @@ public class App extends Application {
 
         MovementControlPlayer movement = implementPlayer(player, activeMap);
         ProjectileShooting projectileShooting = new ProjectileShooting();
-        projectileShooting.SpawnDefaultProjectile(root, scene, player, movement, activeMap);  //find a way to add map to this mf
+        projectileShooting.SpawnDefaultProjectile(root, scene, player, movement, activeMap, playerProjectile);  //find a way to add map to this mf
         placeEntity(player, floorManager.getCenter(), 0, 0);
 
         // --- enemy ---
-        Enemy enemy = new Enemy(10, 0, 0, sprite);
+        Enemy enemy = new Enemy(3, 0, 0, sprite, root);
         EnemyNearestNeighbor enemyMovement = new EnemyNearestNeighbor();
+        EnemyRandomMovement enemyRandomMovement = new EnemyRandomMovement();
+        EnemyShooting enemyShooting = new EnemyShooting();
         ImageView enemyView = enemy.getImageView();
         enemyView.setFitWidth(60);
         enemyView.setPreserveRatio(true);
@@ -105,11 +120,22 @@ public class App extends Application {
 
             @Override
             public void handle(long now) {
+
+                if (!player.isAlive()) {
+                    stop();
+                    return;
+                }
                 speedText.setText(String.format("Speed = %.1f", movement.getSpeed()));
                 player.getHitbox();
 
                 // enemy first, before any early return below
-                enemyMovement.enemyNearestNeighbor(enemy, player, activeMap);
+                // enemyMovement.enemyNearestNeighbor(enemy, player, activeMap);
+                if (enemy.isAlive()) {
+                    enemyRandomMovement.enemyRandomMovement(enemy, player, activeMap, now);
+                    enemyShooting.enemyShooting(enemy, root, player, movement, activeMap, sprite, enemyProjectiles);
+                }
+
+                dealDamage.dealDamage(player, enemy, playerProjectile, enemyProjectiles, root);
 
                 Direction door = floorManager.getDoorAt(player.getX_pos(), player.getY_pos());
                 if (door == null) {
