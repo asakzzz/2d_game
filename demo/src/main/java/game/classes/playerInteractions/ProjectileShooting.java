@@ -1,5 +1,7 @@
 package game.classes.playerInteractions;
 
+import java.util.ArrayList;
+
 import game.App;
 import game.classes.entities.Player;
 import game.classes.entities.Projectile;
@@ -27,13 +29,11 @@ public class ProjectileShooting {
      * @param map The map where the scene takes place
      */
 
-    public void SpawnDefaultProjectile(Pane root, Scene scene, Player player, MovementControlPlayer movement, Map map) {
+    public void SpawnDefaultProjectile(Pane root, Scene scene, Player player, MovementControlPlayer movement, Map map, ArrayList<Projectile> projectileList) {
 
-        //for testing purposes
         Image sheet = new Image(App.class.getResourceAsStream("assets/knight.png"));
         Image sprite = ImageReading.getFrame(sheet, 0, 0, 32, 32);
 
-        //make the projectile appear if space pressed
         scene.addEventHandler(KeyEvent.KEY_PRESSED, e -> {
             double xVector = (e.getCode() == KeyCode.RIGHT ? 1 : 0) - (e.getCode() == KeyCode.LEFT ? 1 : 0);
             double yVector = (e.getCode() == KeyCode.DOWN ? 1 : 0) - (e.getCode() == KeyCode.UP ? 1 : 0);
@@ -41,11 +41,13 @@ public class ProjectileShooting {
 
             if (now - lastshot >= cooldown) {
                 lastshot = now;
-                Projectile projectile = new Projectile(1, 0, 0, sprite);
+                Projectile projectile = new Projectile(1, 0, 0, sprite , root);
                 projectile.setX_pos(player.getX_pos());
                 projectile.setY_pos(player.getY_pos());
                 root.getChildren().add(projectile.getImageView());
+                projectileList.add(projectile);
                 new MovementControlProjectile(movement, map, root).MoveProjectile(projectile, xVector, yVector);
+                
             }
 
         }

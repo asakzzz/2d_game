@@ -9,7 +9,7 @@ import game.classes.maps.Map;
 public class EnemyRandomMovement {
 
     private Random r = new Random();
-    private double speed = 0.6;
+    private double speed = 0.3;
 
     private double dirX = 0;
     private double dirY = 0;

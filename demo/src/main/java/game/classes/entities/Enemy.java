@@ -1,6 +1,7 @@
 package game.classes.entities;
 
 import javafx.scene.image.Image;
+import javafx.scene.layout.Pane;
 
 public class Enemy extends Entity {
 
@@ -11,8 +12,8 @@ public class Enemy extends Entity {
      * @param Mana Mana of the Enemy
      */
 
-    public Enemy(int Hp, int Def, int Mana, Image image) {
-        super(100, 0, 50, image);
+    public Enemy(int Hp, int Def, int Mana, Image image , Pane root) {
+        super(3, 0, 50, image , root);
     }
 
     public void setImage(Image image) {
