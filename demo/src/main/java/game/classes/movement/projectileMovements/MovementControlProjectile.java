@@ -48,6 +48,7 @@ public class MovementControlProjectile {
             public void handle(long now) {
                 projectile.setX_pos(projectile.getX_pos() + xVector);
                 projectile.setY_pos(projectile.getY_pos() + yVector);
+                
                 if (hitsWall(projectile)) {
                     root.getChildren().remove(projectile.getImageView());
                     stop();
