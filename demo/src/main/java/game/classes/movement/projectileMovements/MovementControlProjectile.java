@@ -49,10 +49,11 @@ public class MovementControlProjectile {
                 projectile.setX_pos(projectile.getX_pos() + xVector);
                 projectile.setY_pos(projectile.getY_pos() + yVector);
                 
-                if (hitsWall(projectile)) {
+                if (hitsWall(projectile) || hitsDoor(projectile)) {
                     root.getChildren().remove(projectile.getImageView());
                     stop();
                 }
+
             }
         }.start();
 
@@ -67,5 +68,9 @@ public class MovementControlProjectile {
     private boolean hitsWall(Projectile projectile) {
         return map.isWall(projectile.getX_pos(), projectile.getY_pos(),
                 projectile.getWidth(), projectile.getHeight());
+    }
+
+    private boolean hitsDoor(Projectile projectile) {
+        return map.isDoor(projectile.getX_pos(), projectile.getY_pos(), projectile.getWidth(), projectile.getHeight());
     }
 }
