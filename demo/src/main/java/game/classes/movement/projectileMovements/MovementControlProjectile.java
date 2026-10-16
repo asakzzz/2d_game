@@ -50,7 +50,7 @@ public class MovementControlProjectile {
                 projectile.setY_pos(projectile.getY_pos() + yVector);
                 
                 if (hitsWall(projectile) || hitsDoor(projectile)) {
-                    root.getChildren().remove(projectile.getImageView());
+                    projectile.kill();
                     stop();
                 }
 

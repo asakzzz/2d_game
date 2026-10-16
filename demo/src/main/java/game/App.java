@@ -1,24 +1,23 @@
 package game;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
+import game.classes.enemyShooting.EnemyShooting;
+import game.classes.entities.Debug;
 import game.classes.entities.Enemy;
 import game.classes.entities.Player;
-import game.classes.floor.Direction;
-import java.util.ArrayList;
-import game.classes.enemyShooting.EnemyShooting;
-import game.classes.floor.Direction;
 import game.classes.entities.Projectile;
-import game.classes.healthCare.DealDamage;
-import game.classes.healthCare.KillEntity;
-import game.classes.movement.enemyMovements.EnemyRandomMovement;
-import game.classes.graphical_user_inteface.MainMenu;
+import game.classes.floor.Direction;
 import game.classes.floor.FloorGenerator;
 import game.classes.floor.FloorManager;
 import game.classes.graphical_user_inteface.GameViewport;
+import game.classes.graphical_user_inteface.MainMenu;
+import game.classes.healthCare.DealDamage;
+import game.classes.healthCare.KillEntity;
 import game.classes.maps.Map;
 import game.classes.maps.MapRenderer;
-import game.classes.movement.enemyMovements.EnemyNearestNeighbor;
+import game.classes.movement.enemyMovements.EnemyRandomMovement;
 import game.classes.movement.playerMovements.MovementControlPlayer;
 import game.classes.playerInteractions.ProjectileShooting;
 import game.classes.sprites.ImageReading;
@@ -103,11 +102,18 @@ public class App<T> extends Application {
         placeEntity(enemy, floorManager.getCenter(), 200, 0);
 
         // --- debug ---
+        Debug debug = new Debug();
         Rectangle playerBox = new Rectangle(player.getWidth(), player.getHeight());
         playerBox.setFill(Color.TRANSPARENT);
         playerBox.setStroke(Color.RED);
         playerBox.setStrokeWidth(2);
         root.getChildren().add(playerBox);
+
+        Rectangle enemyBox = new Rectangle(enemy.getWidth(), enemy.getHeight());
+        enemyBox.setFill(Color.TRANSPARENT);
+        enemyBox.setStroke(Color.RED);
+        enemyBox.setStrokeWidth(2);
+        root.getChildren().add(enemyBox);
 
         // --- HUD (added last so it draws on top) ---
         Text speedText = new Text();
@@ -125,16 +131,28 @@ public class App<T> extends Application {
             @Override
             public void handle(long now) {
 
-                 if (!player.isAlive()) {
+                if (!player.isAlive()) {
                     stop();
                     return;
                 }
-
 
                 playerBox.setWidth(player.getWidth());
                 playerBox.setHeight(player.getHeight());
                 playerBox.setX(player.getX_pos());
                 playerBox.setY(player.getY_pos());
+
+                enemyBox.setWidth(enemy.getWidth());
+                enemyBox.setHeight(enemy.getHeight());
+                enemyBox.setX(enemy.getX_pos());
+                enemyBox.setY(enemy.getY_pos());
+
+                // Rectangle projBox = debug.getHitboxProjectile(playerProjectile);
+
+                // projBox.setWidth(projBox.getWidth());
+                // projBox.setHeight(projBox.getHeight());
+                // projBox.setX(projBox.getX());
+                // projBox.setY(projBox.getY());
+
                 speedText.setText(String.format("Speed = %.1f", movement.getSpeed()));
                 projectileShooting.SpawnDefaultProjectile(root, scene, player, movement, activeMap, playerProjectile); // find a way to
                 // add map to this
