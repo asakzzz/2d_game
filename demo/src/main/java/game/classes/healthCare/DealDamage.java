@@ -25,9 +25,9 @@ public class DealDamage<T> {
                 continue;
             }
 
-            if (collision.CollidingHitbox(player, projectile)) {
+            if (collision.CollidingHitbox(player, projectile) && player.isAlive()) {
                 player.decreaseHpSoft();
-                System.out.println("player" + player.getHp());
+                // System.out.println("player" + player.getHp());
                 projectile.kill();
                 it.remove();
             }
@@ -42,9 +42,9 @@ public class DealDamage<T> {
                 continue;
             }
 
-            if (collision.CollidingHitbox(enemy, projectile)) {
+            if (collision.CollidingHitbox(enemy, projectile) && enemy.isAlive()) {
                 enemy.decreaseHpSoft();
-                System.out.println("enemy" + enemy.getHp());
+                // System.out.println("enemy" + enemy.getHp());
                 projectile.kill();
                 it.remove();
             }

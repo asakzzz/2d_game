@@ -85,12 +85,14 @@ public class App<T> extends Application {
 
         // --- player ---
         Player player = new Player(5, 0, 0, sprite, root);
-        ProjectileShooting projectileShooting = new ProjectileShooting();
+
         MovementControlPlayer movement = implementPlayer(player, activeMap);
         placeEntity(player, floorManager.getCenter(), 0, 0);
+        ProjectileShooting projectileShooting = new ProjectileShooting();
+        projectileShooting.SpawnDefaultProjectile(root, scene, player, movement, activeMap, playerProjectile); // find a way to
 
         DealDamage dealDamage = new DealDamage();
-        KillEntity killEntity = new KillEntity<T>();
+        KillEntity killEntity = new KillEntity();
 
         // --- enemy ---
         Enemy enemy = new Enemy(3, 0, 0, sprite, root);
@@ -153,14 +155,23 @@ public class App<T> extends Application {
                 enemyBox.setY(enemy.getY_pos());
 
                 speedText.setText(String.format("Speed = %.1f", movement.getSpeed()));
-                projectileShooting.SpawnDefaultProjectile(root, scene, player, movement, activeMap, playerProjectile); // find a way to
                 // add map to this
                 // mf
 
                 if (enemy.isAlive()) {
+                    enemyBox.setWidth(enemy.getWidth());
+                    enemyBox.setHeight(enemy.getHeight());
+                    enemyBox.setX(enemy.getX_pos());
+                    enemyBox.setY(enemy.getY_pos());
                     enemyRandomMovement.enemyRandomMovement(enemy, player, activeMap, now);
                     enemyShooting.enemyShooting(enemy, root, player, movement, activeMap, sprite, enemyProjectiles);
+                } else {
+                    root.getChildren().remove(enemyBox);
+                    enemy.kill();
                 }
+
+                killEntity.killEnemy(enemy, root);
+                killEntity.killPlayer(player, root);
 
                 dealDamage.dealDamage(player, enemy, playerProjectile, enemyProjectiles, root);
 
