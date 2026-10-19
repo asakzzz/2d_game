@@ -72,9 +72,9 @@ public abstract class Entity {
     public void kill() {
         this.alive = false;
 
-        root.getChildren().remove(imageView);
-        if (this.getHitbox() != null) {
-            root.getChildren().remove(hitbox);
+        root.getChildren().remove(this.imageView);
+        if (this.hitbox != null) {
+            root.getChildren().remove(this.hitbox);
         }
 
     }

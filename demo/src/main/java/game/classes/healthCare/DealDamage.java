@@ -20,7 +20,7 @@ public class DealDamage<T> {
         Iterator<Projectile> it = projectileEnemy.iterator();
         while (it.hasNext()) {
             Projectile projectile = it.next();
-            if (projectile.getImageView() == null) {
+            if (projectile.isAlive() == false) {
                 it.remove();
                 continue;
             }
@@ -28,7 +28,7 @@ public class DealDamage<T> {
             if (collision.CollidingHitbox(player, projectile)) {
                 player.decreaseHpSoft();
                 System.out.println("player" + player.getHp());
-                root.getChildren().remove(projectile);
+                projectile.kill();
                 it.remove();
             }
         }
@@ -37,7 +37,7 @@ public class DealDamage<T> {
 
         while (it.hasNext()) {
             Projectile projectile = it.next();
-            if (projectile.getImageView() == null) {
+            if (projectile.isAlive() == false) {
                 it.remove();
                 continue;
             }
@@ -45,7 +45,7 @@ public class DealDamage<T> {
             if (collision.CollidingHitbox(enemy, projectile)) {
                 enemy.decreaseHpSoft();
                 System.out.println("enemy" + enemy.getHp());
-                root.getChildren().remove(projectile);
+                projectile.kill();
                 it.remove();
             }
         }

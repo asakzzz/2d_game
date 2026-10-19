@@ -46,15 +46,21 @@ public class MovementControlProjectile {
         new AnimationTimer() {
             @Override
             public void handle(long now) {
-                System.out.println( "X" + xVector);
-                System.out.println("Y" + yVector);
-                projectile.setX_pos(projectile.getX_pos() + xVector);
-                projectile.setY_pos(projectile.getY_pos() + yVector);
-                
+                if (projectile.isAlive() == false) {
+                    stop();
+                    return;
+                }
                 if (hitsWall(projectile) || hitsDoor(projectile)) {
                     projectile.kill();
                     stop();
                 }
+
+                
+                projectile.setX_pos(projectile.getX_pos() + xVector);
+                projectile.setY_pos(projectile.getY_pos() + yVector);
+                
+
+
 
             }
         }.start();

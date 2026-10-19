@@ -10,6 +10,7 @@ import game.classes.entities.Projectile;
 import game.classes.floor.Direction;
 import game.classes.floor.FloorGenerator;
 import game.classes.floor.FloorManager;
+import game.classes.graphical_user_inteface.GameOverMenu;
 import game.classes.graphical_user_inteface.GameViewport;
 import game.classes.graphical_user_inteface.MainMenu;
 import game.classes.healthCare.DealDamage;
@@ -36,6 +37,7 @@ public class App<T> extends Application {
     private static Scene scene;
     private Pane root;
     private MainMenu mainMenu = new MainMenu();
+    private GameOverMenu gameOver = new GameOverMenu();
 
     @Override
     public void start(Stage stage) throws IOException {
@@ -131,7 +133,13 @@ public class App<T> extends Application {
 
                 if (!player.isAlive()) {
                     stop();
-                    return;
+                    gameOver.GameOver(root, () -> {
+                        try {
+                            startGame(stage);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    });
                 }
 
                 playerBox.setWidth(player.getWidth());
@@ -143,7 +151,6 @@ public class App<T> extends Application {
                 enemyBox.setHeight(enemy.getHeight());
                 enemyBox.setX(enemy.getX_pos());
                 enemyBox.setY(enemy.getY_pos());
-
 
                 speedText.setText(String.format("Speed = %.1f", movement.getSpeed()));
                 projectileShooting.SpawnDefaultProjectile(root, scene, player, movement, activeMap, playerProjectile); // find a way to
