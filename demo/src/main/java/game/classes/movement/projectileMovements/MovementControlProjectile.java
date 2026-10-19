@@ -10,7 +10,7 @@ public class MovementControlProjectile {
 
     private double xVector = 0;
     private double yVector = 0;
-    private double speed = 0.8;
+    private double speed = 1.2;
 
     MovementControlPlayer movement;
     Map map;
@@ -40,19 +40,27 @@ public class MovementControlProjectile {
     public void MoveProjectile(Projectile projectile, double directionX, double directionY) {
 
         double len = Math.hypot(directionX, directionY);
-        xVector = directionX / len * speed;
-        yVector = directionY / len * speed;
+        xVector = directionX / len * speed + movement.getHorizontalSpeed();
+        yVector = directionY / len * speed + movement.getVerticalSpeed();
 
         new AnimationTimer() {
             @Override
             public void handle(long now) {
+                if (projectile.isAlive() == false) {
+                    stop();
+                    return;
+                }
+                if (hitsWall(projectile) || hitsDoor(projectile)) {
+                    projectile.kill();
+                    stop();
+                }
+
+                
                 projectile.setX_pos(projectile.getX_pos() + xVector);
                 projectile.setY_pos(projectile.getY_pos() + yVector);
                 
-                if (hitsWall(projectile) || hitsDoor(projectile)) {
-                    root.getChildren().remove(projectile.getImageView());
-                    stop();
-                }
+
+
 
             }
         }.start();

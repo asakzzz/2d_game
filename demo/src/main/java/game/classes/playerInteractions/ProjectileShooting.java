@@ -14,21 +14,26 @@ import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 
 public class ProjectileShooting {
 
     private long lastshot = 0;
     private long cooldown = 300_000_000L;
 
-    /** This method spawns a projectile depending on the cooldown computed by the system time, the key pressed for the direction and the position of the player
-     *  It then calls the {@code MoveProjectile} method to move it.
-     * @param root The root of the window, meant to add or remove elements from it
+    /**
+     * This method spawns a projectile depending on the cooldown computed by the
+     * system time, the key pressed for the direction and the position of the
+     * player It then calls the {@code MoveProjectile} method to move it.
+     *
+     * @param root The root of the window, meant to add or remove elements from
+     * it
      * @param scene The scene where the player and projectile are
      * @param player The player who shoots the projectile
      * @param movement The movement controls of the player
      * @param map The map where the scene takes place
      */
-
     public void SpawnDefaultProjectile(Pane root, Scene scene, Player player, MovementControlPlayer movement, Map map, ArrayList<Projectile> projectileList) {
 
         Image sheet = new Image(App.class.getResourceAsStream("assets/knight.png"));
@@ -41,13 +46,21 @@ public class ProjectileShooting {
 
             if (now - lastshot >= cooldown) {
                 lastshot = now;
-                Projectile projectile = new Projectile(1, 0, 0, sprite , root);
+                Projectile projectile = new Projectile(1, 0, 0, sprite, root);
                 projectile.setX_pos(player.getX_pos());
                 projectile.setY_pos(player.getY_pos());
+
+                // denug
+                Rectangle projectileHitbox = projectile.getHitbox();
+                projectileHitbox.setFill(Color.TRANSPARENT);
+                projectileHitbox.setStroke(Color.RED);
+                projectileHitbox.setStrokeWidth(2);
+
                 root.getChildren().add(projectile.getImageView());
+                root.getChildren().add(projectileHitbox);// also debug
                 projectileList.add(projectile);
                 new MovementControlProjectile(movement, map, root).MoveProjectile(projectile, xVector, yVector);
-                
+
             }
 
         }

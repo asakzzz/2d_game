@@ -4,7 +4,7 @@ import game.classes.entities.Enemy;
 import game.classes.entities.Player;
 import javafx.scene.layout.Pane;
 
-public class KillEntity<T> {
+public class KillEntity {
 
    public void killPlayer (Player player , Pane root) {
     if (player.getHp() <= 0 && player.isAlive()) {
