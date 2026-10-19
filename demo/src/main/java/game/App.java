@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import game.classes.enemyShooting.EnemyShooting;
-import game.classes.entities.Debug;
 import game.classes.entities.Enemy;
 import game.classes.entities.Player;
 import game.classes.entities.Projectile;
@@ -102,7 +101,6 @@ public class App<T> extends Application {
         placeEntity(enemy, floorManager.getCenter(), 200, 0);
 
         // --- debug ---
-        Debug debug = new Debug();
         Rectangle playerBox = new Rectangle(player.getWidth(), player.getHeight());
         playerBox.setFill(Color.TRANSPARENT);
         playerBox.setStroke(Color.RED);
@@ -146,12 +144,6 @@ public class App<T> extends Application {
                 enemyBox.setX(enemy.getX_pos());
                 enemyBox.setY(enemy.getY_pos());
 
-                // Rectangle projBox = debug.getHitboxProjectile(playerProjectile);
-
-                // projBox.setWidth(projBox.getWidth());
-                // projBox.setHeight(projBox.getHeight());
-                // projBox.setX(projBox.getX());
-                // projBox.setY(projBox.getY());
 
                 speedText.setText(String.format("Speed = %.1f", movement.getSpeed()));
                 projectileShooting.SpawnDefaultProjectile(root, scene, player, movement, activeMap, playerProjectile); // find a way to
