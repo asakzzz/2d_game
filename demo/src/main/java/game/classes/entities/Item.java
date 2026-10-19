@@ -28,7 +28,7 @@ public class Item extends Entity {
         if (effect == 0 || effect == 1 || effect == 2) {
             this.effect = effect;
         } else {
-            throw new IllegalArgumentException("Invalid effect type: " + effect + ". Expected 0 (Offensive), 1 (Health Regen), or 2 (Mana Regen).");
+            throw new IllegalArgumentException("Invalid effect type: " + effect + ". Expected 0 (Attack damage), 1 (Health Regen), or 2 (Attack Speed).");
         }
     }
 

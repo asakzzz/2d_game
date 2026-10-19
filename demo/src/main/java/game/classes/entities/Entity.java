@@ -27,6 +27,7 @@ public abstract class Entity {
     protected boolean alive = true;
     protected Pane root;
     protected int attackDamage = 1;
+    protected long attackCooldown = 300_000_000L;
 
     /**
      * Constructs a new {@code Entity} with three parameters {@code hp, def} and
@@ -52,6 +53,7 @@ public abstract class Entity {
         y_pos = 0;
         alive = true;
         this.attackDamage = 1;
+        this.attackCooldown = 300_000_000L;
 
     }
 
@@ -76,6 +78,12 @@ public abstract class Entity {
         }
 
     }
+
+    public long getAttackCooldown() {
+        return this.attackCooldown;
+    }
+
+    
 
     public boolean isAlive() {
         return this.alive;
@@ -240,6 +248,10 @@ public abstract class Entity {
 
     public void increaseHp(int heal) {
         this.Hp += heal;
+    }
+
+    public void decreseAttackSpeed(long cooldown) {
+        this.attackCooldown -= cooldown;
     }
 
     

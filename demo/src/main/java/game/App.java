@@ -109,7 +109,7 @@ public class App<T> extends Application {
         // --- item ---
         Image Itemsheet = new Image(App.class.getResourceAsStream("assets/mugs.png"));
         Image Itemsprite = ImageReading.getFrame(Itemsheet, 1, 3, 32, 32);
-        Item healCup = new Item(1, Itemsprite, root); // 0 offensive 1 health
+        Item healCup = new Item(2, Itemsprite, root); // 0 attackDamage 1 health 2 attackSpeed
         ImageView itemView = healCup.getImageView();
         GrabbingItem grabbingItem = new GrabbingItem();
         grabbingItem.GrabbingItem(player, healCup);
