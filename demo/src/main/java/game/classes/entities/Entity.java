@@ -1,6 +1,6 @@
 package game.classes.entities;
 
-import game.classes.inventory.Inventory;
+// import game.classes.inventory.Inventory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
@@ -16,7 +16,7 @@ public abstract class Entity {
     protected int Hp;
     protected int Def;
     protected int Mana;
-    protected Inventory inventory;
+    // protected Inventory inventory;
     protected Image image;
     ImageView imageView;
     protected double x_pos;
@@ -26,6 +26,7 @@ public abstract class Entity {
     protected Rectangle hitbox;
     protected boolean alive = true;
     protected Pane root;
+    protected int attackDamage = 1;
 
     /**
      * Constructs a new {@code Entity} with three parameters {@code hp, def} and
@@ -43,13 +44,14 @@ public abstract class Entity {
         this.Hp = hp;
         this.Def = def;
         this.Mana = mana;
-        this.inventory = new Inventory();
+        // this.inventory = new Inventory();
         this.image = image;
         this.imageView = new ImageView(image);
         this.root = root;
         x_pos = 0;
         y_pos = 0;
         alive = true;
+        this.attackDamage = 1;
 
     }
 
@@ -61,12 +63,8 @@ public abstract class Entity {
         return Hp;
     }
 
-    public void decreaseHpSoft() {
-        this.Hp -= 1;
-    }
-
-    public void decreaseHpHard() {
-        this.Hp -= 2;
+    public void decreaseHp(int damage) {
+        this.Hp -= damage;
     }
 
     public void kill() {
@@ -103,9 +101,9 @@ public abstract class Entity {
      *
      * @return current {@code inventory} of the entity
      */
-    public Inventory getInventory() {
-        return inventory;
-    }
+    // public Inventory getInventory() {
+    //     return inventory;
+    // }
 
     /**
      *
@@ -231,5 +229,19 @@ public abstract class Entity {
     public double getHeight() {
         return imageView.getBoundsInParent().getHeight();
     }
+
+    public int getAttackDamage() {
+        return this.attackDamage;
+    }
+
+    public void increaseAttackDamage(int damage) {
+        this.attackDamage += damage;
+    }
+
+    public void increaseHp(int heal) {
+        this.Hp += heal;
+    }
+
+    
 
 }

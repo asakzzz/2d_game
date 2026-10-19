@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import game.classes.enemyShooting.EnemyShooting;
 import game.classes.entities.Enemy;
+import game.classes.entities.Item;
 import game.classes.entities.Player;
 import game.classes.entities.Projectile;
 import game.classes.floor.Direction;
@@ -19,6 +20,7 @@ import game.classes.maps.Map;
 import game.classes.maps.MapRenderer;
 import game.classes.movement.enemyMovements.EnemyRandomMovement;
 import game.classes.movement.playerMovements.MovementControlPlayer;
+import game.classes.playerInteractions.GrabbingItem;
 import game.classes.playerInteractions.ProjectileShooting;
 import game.classes.sprites.ImageReading;
 import javafx.animation.AnimationTimer;
@@ -104,6 +106,19 @@ public class App<T> extends Application {
         root.getChildren().add(enemyView);
         placeEntity(enemy, floorManager.getCenter(), 200, 0);
 
+        // --- item ---
+        Image Itemsheet = new Image(App.class.getResourceAsStream("assets/mugs.png"));
+        Image Itemsprite = ImageReading.getFrame(Itemsheet, 0, 0, 32, 32);
+        Item healCup = new Item(1, Itemsprite, root); // 0 offensive 1 health
+        ImageView itemView = healCup.getImageView();
+        GrabbingItem grabbingItem = new GrabbingItem();
+        grabbingItem.GrabbingItem(player, healCup);
+
+        itemView.setFitWidth(50);
+        itemView.setPreserveRatio(true);
+        root.getChildren().add(itemView);
+        placeEntity(healCup, floorManager.getCenter(), 100, 0);
+
         // --- debug ---
         Rectangle playerBox = new Rectangle(player.getWidth(), player.getHeight());
         playerBox.setFill(Color.TRANSPARENT);
@@ -117,11 +132,22 @@ public class App<T> extends Application {
         enemyBox.setStrokeWidth(2);
         root.getChildren().add(enemyBox);
 
+        Rectangle itemBox = new Rectangle(healCup.getWidth(), healCup.getHeight());
+        itemBox.setFill(Color.TRANSPARENT);
+        itemBox.setStroke(Color.RED);
+        itemBox.setStrokeWidth(2);
+        root.getChildren().add(itemBox);
+
         // --- HUD (added last so it draws on top) ---
         Text speedText = new Text();
         speedText.setX(10);
         speedText.setY(20);
         root.getChildren().add(speedText);
+
+        Text lives = new Text();
+        lives.setX(10);
+        lives.setY(50);
+        root.getChildren().add(lives);
 
         stage.setScene(scene);
         stage.setFullScreen(true);
@@ -155,9 +181,10 @@ public class App<T> extends Application {
                 enemyBox.setY(enemy.getY_pos());
 
                 speedText.setText(String.format("Speed = %.1f", movement.getSpeed()));
+                lives.setText(String.format("lives = " + player.getHp()));
+
                 // add map to this
                 // mf
-
                 if (enemy.isAlive()) {
                     enemyBox.setWidth(enemy.getWidth());
                     enemyBox.setHeight(enemy.getHeight());

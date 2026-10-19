@@ -26,7 +26,8 @@ public class DealDamage<T> {
             }
 
             if (collision.CollidingHitbox(player, projectile) && player.isAlive()) {
-                player.decreaseHpSoft();
+                int damage = enemy.getAttackDamage();
+                player.decreaseHp(damage);
                 // System.out.println("player" + player.getHp());
                 projectile.kill();
                 it.remove();
@@ -43,7 +44,8 @@ public class DealDamage<T> {
             }
 
             if (collision.CollidingHitbox(enemy, projectile) && enemy.isAlive()) {
-                enemy.decreaseHpSoft();
+                int damage = player.getAttackDamage();
+                enemy.decreaseHp(damage);
                 // System.out.println("enemy" + enemy.getHp());
                 projectile.kill();
                 it.remove();
