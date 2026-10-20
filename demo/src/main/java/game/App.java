@@ -91,7 +91,8 @@ public class App<T> extends Application {
         MovementControlPlayer movement = implementPlayer(player, activeMap);
         placeEntity(player, floorManager.getCenter(), 0, 0);
         ProjectileShooting projectileShooting = new ProjectileShooting();
-        projectileShooting.SpawnDefaultProjectile(root, scene, player, movement, activeMap, playerProjectile); // find a way to
+        projectileShooting.SpawnDefaultProjectile(root, scene, player, movement, activeMap, playerProjectile); // find a
+                                                                                                               // way to
 
         DealDamage dealDamage = new DealDamage();
         KillEntity killEntity = new KillEntity();
@@ -170,15 +171,10 @@ public class App<T> extends Application {
                     });
                 }
 
-                playerBox.setWidth(player.getWidth());
-                playerBox.setHeight(player.getHeight());
-                playerBox.setX(player.getX_pos());
-                playerBox.setY(player.getY_pos());
-
-                enemyBox.setWidth(enemy.getWidth());
-                enemyBox.setHeight(enemy.getHeight());
-                enemyBox.setX(enemy.getX_pos());
-                enemyBox.setY(enemy.getY_pos());
+                playerBox.setWidth(player.getWidth() - 20);
+                playerBox.setHeight(player.getHeight() - 15);
+                playerBox.setX(player.getX_pos() + 10);
+                playerBox.setY(player.getY_pos() + 9);
 
                 speedText.setText(String.format("Speed = %.1f", movement.getSpeed()));
                 lives.setText(String.format("lives = " + player.getHp()));
@@ -186,10 +182,10 @@ public class App<T> extends Application {
                 // add map to this
                 // mf
                 if (enemy.isAlive()) {
-                    enemyBox.setWidth(enemy.getWidth());
-                    enemyBox.setHeight(enemy.getHeight());
-                    enemyBox.setX(enemy.getX_pos());
-                    enemyBox.setY(enemy.getY_pos());
+                    enemyBox.setWidth(enemy.getWidth() - 20);
+                    enemyBox.setHeight(enemy.getHeight() - 15);
+                    enemyBox.setX(enemy.getX_pos() + 10);
+                    enemyBox.setY(enemy.getY_pos() + 9);
                     enemyRandomMovement.enemyRandomMovement(enemy, player, activeMap, now);
                     enemyShooting.enemyShooting(enemy, root, player, movement, activeMap, sprite, enemyProjectiles);
                 } else {

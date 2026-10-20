@@ -212,10 +212,10 @@ public abstract class Entity {
             this.hitbox = new Rectangle(getX_pos(), getY_pos(), getWidth(), getHeight());
 
         } else {
-            this.hitbox.setX(getX_pos());
-            this.hitbox.setY(getY_pos());
-            this.hitbox.setWidth(getWidth());
-            this.hitbox.setHeight(getHeight());
+            this.hitbox.setX(getX_pos() + 10);
+            this.hitbox.setY(getY_pos() + 9);
+            this.hitbox.setWidth(getWidth() - 20);
+            this.hitbox.setHeight(getHeight() - 15);
         }
 
         return this.hitbox;
