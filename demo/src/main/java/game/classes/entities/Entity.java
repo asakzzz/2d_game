@@ -1,6 +1,6 @@
 package game.classes.entities;
 
-import game.classes.inventory.Inventory;
+// import game.classes.inventory.Inventory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
@@ -16,7 +16,7 @@ public abstract class Entity {
     protected int Hp;
     protected int Def;
     protected int Mana;
-    protected Inventory inventory;
+    // protected Inventory inventory;
     protected Image image;
     ImageView imageView;
     protected double x_pos;
@@ -26,6 +26,8 @@ public abstract class Entity {
     protected Rectangle hitbox;
     protected boolean alive = true;
     protected Pane root;
+    protected int attackDamage = 1;
+    protected long attackCooldown = 300_000_000L;
 
     /**
      * Constructs a new {@code Entity} with three parameters {@code hp, def} and
@@ -43,13 +45,15 @@ public abstract class Entity {
         this.Hp = hp;
         this.Def = def;
         this.Mana = mana;
-        this.inventory = new Inventory();
+        // this.inventory = new Inventory();
         this.image = image;
         this.imageView = new ImageView(image);
         this.root = root;
         x_pos = 0;
         y_pos = 0;
         alive = true;
+        this.attackDamage = 1;
+        this.attackCooldown = 300_000_000L;
 
     }
 
@@ -61,12 +65,8 @@ public abstract class Entity {
         return Hp;
     }
 
-    public void decreaseHpSoft() {
-        this.Hp -= 1;
-    }
-
-    public void decreaseHpHard() {
-        this.Hp -= 2;
+    public void decreaseHp(int damage) {
+        this.Hp -= damage;
     }
 
     public void kill() {
@@ -78,6 +78,12 @@ public abstract class Entity {
         }
 
     }
+
+    public long getAttackCooldown() {
+        return this.attackCooldown;
+    }
+
+    
 
     public boolean isAlive() {
         return this.alive;
@@ -103,9 +109,9 @@ public abstract class Entity {
      *
      * @return current {@code inventory} of the entity
      */
-    public Inventory getInventory() {
-        return inventory;
-    }
+    // public Inventory getInventory() {
+    //     return inventory;
+    // }
 
     /**
      *
@@ -206,10 +212,10 @@ public abstract class Entity {
             this.hitbox = new Rectangle(getX_pos(), getY_pos(), getWidth(), getHeight());
 
         } else {
-            this.hitbox.setX(getX_pos());
-            this.hitbox.setY(getY_pos());
-            this.hitbox.setWidth(getWidth());
-            this.hitbox.setHeight(getHeight());
+            this.hitbox.setX(getX_pos() + 10);
+            this.hitbox.setY(getY_pos() + 9);
+            this.hitbox.setWidth(getWidth() - 20);
+            this.hitbox.setHeight(getHeight() - 15);
         }
 
         return this.hitbox;
@@ -231,5 +237,23 @@ public abstract class Entity {
     public double getHeight() {
         return imageView.getBoundsInParent().getHeight();
     }
+
+    public int getAttackDamage() {
+        return this.attackDamage;
+    }
+
+    public void increaseAttackDamage(int damage) {
+        this.attackDamage += damage;
+    }
+
+    public void increaseHp(int heal) {
+        this.Hp += heal;
+    }
+
+    public void decreseAttackSpeed(long cooldown) {
+        this.attackCooldown -= cooldown;
+    }
+
+    
 
 }

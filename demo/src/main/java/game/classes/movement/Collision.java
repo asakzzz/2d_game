@@ -3,6 +3,7 @@ package game.classes.movement;
 import java.util.ArrayList;
 
 import game.classes.entities.Enemy;
+import game.classes.entities.Item;
 import game.classes.entities.Player;
 import game.classes.entities.Projectile;
 import javafx.scene.shape.Rectangle;
@@ -29,6 +30,10 @@ public class Collision<T> {
 
         if (otherEntity instanceof Projectile) {
             hitboxList.add(((Projectile) otherEntity).getHitbox());
+        }
+ 
+        if (otherEntity instanceof Item) {
+            hitboxList.add(((Item)otherEntity).getHitbox());
         }
 
         return hitboxList;

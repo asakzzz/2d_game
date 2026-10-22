@@ -1,14 +1,15 @@
-package game.classes.items;
+package game.classes.entities;
+
+import javafx.scene.image.Image;
+import javafx.scene.layout.Pane;
 
 /**
  *
  * This {@code Item} class is the blueprint for all items in the game Items
  * suchs as health regen, mana regen or offensive items
  */
-public class Item {
+public class Item extends Entity {
 
-    protected String name;
-    protected String description;
     protected int effect;
 
     /**
@@ -22,22 +23,13 @@ public class Item {
      * It also checks if the object's effect is between those ints, if not it
      * returns an error
      */
-    public Item(String name, String description, int effect) {
-        this.name = name;
-        this.description = description;
+    public Item(int effect , Image image , Pane root) {
+        super(1, 0, 0, image, root);
         if (effect == 0 || effect == 1 || effect == 2) {
             this.effect = effect;
         } else {
-            throw new IllegalArgumentException("Invalid effect type: " + effect + ". Expected 0 (Offensive), 1 (Health Regen), or 2 (Mana Regen).");
+            throw new IllegalArgumentException("Invalid effect type: " + effect + ". Expected 0 (Attack damage), 1 (Health Regen), or 2 (Attack Speed).");
         }
-    }
-
-    /**
-     *
-     * @return the name of the item
-     */
-    public String getName() {
-        return name;
     }
 
     /**
@@ -47,13 +39,4 @@ public class Item {
     public int getEffect() {
         return effect;
     }
-
-    /**
-     *
-     * @return the description of the item
-     */
-    public String getDescription() {
-        return description;
-    }
-
 }

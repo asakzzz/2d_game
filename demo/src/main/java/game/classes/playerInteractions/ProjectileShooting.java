@@ -20,7 +20,7 @@ import javafx.scene.shape.Rectangle;
 public class ProjectileShooting {
 
     private long lastshot = 0;
-    private long cooldown = 300_000_000L;
+    // private long cooldown = 300_000_000L;
 
     /**
      * This method spawns a projectile depending on the cooldown computed by the
@@ -35,6 +35,7 @@ public class ProjectileShooting {
      * @param map The map where the scene takes place
      */
     public void SpawnDefaultProjectile(Pane root, Scene scene, Player player, MovementControlPlayer movement, Map map, ArrayList<Projectile> projectileList) {
+        long cooldown = player.getAttackCooldown();
 
         Image sheet = new Image(App.class.getResourceAsStream("assets/knight.png"));
         Image sprite = ImageReading.getFrame(sheet, 0, 0, 32, 32);
