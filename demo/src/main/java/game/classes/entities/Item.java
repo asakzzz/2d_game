@@ -18,7 +18,7 @@ public class Item extends Entity {
      * @param name Name of the item
      * @param description Description of the Item
      * @param effect Effect of the item (0 = offensive, 1 = health regen , 2 =
-     * mana regen)
+     * attack speed)
      *
      * It also checks if the object's effect is between those ints, if not it
      * returns an error

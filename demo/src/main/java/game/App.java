@@ -2,6 +2,8 @@ package game;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Random;
 
 import game.classes.enemyShooting.EnemyShooting;
 import game.classes.entities.Enemy;
@@ -105,20 +107,49 @@ public class App<T> extends Application {
         enemyView.setFitWidth(100);
         enemyView.setPreserveRatio(true);
         root.getChildren().add(enemyView);
-        placeEntity(enemy, floorManager.getCenter(), 200, 0);
+        Random r = new Random();
+        double r1 = r.nextDouble(100);
+        double r2 = r.nextDouble(100);
+        placeEntity(enemy, floorManager.getCenter(), r1, r2);
+        ArrayList<Enemy> enemies = new ArrayList<>();
+        enemies.add(enemy);
 
         // --- item ---
         Image Itemsheet = new Image(App.class.getResourceAsStream("assets/mugs.png"));
         Image Itemsprite = ImageReading.getFrame(Itemsheet, 1, 3, 32, 32);
-        Item healCup = new Item(2, Itemsprite, root); // 0 attackDamage 1 health 2 attackSpeed
+        Item healCup = new Item(1, Itemsprite, root); // 0 attackDamage 1 health 2 attackSpeed
         ImageView itemView = healCup.getImageView();
         GrabbingItem grabbingItem = new GrabbingItem();
         grabbingItem.GrabbingItem(player, healCup);
 
+        // --- item ---
+        Image Itemsheet2 = new Image(App.class.getResourceAsStream("assets/mugs.png"));
+        Image Itemsprite2 = ImageReading.getFrame(Itemsheet2, 1, 4, 32, 32);
+        Item damageCup = new Item(0, Itemsprite2, root); // 0 attackDamage 1 health 2 attackSpeed
+        ImageView itemView2 = damageCup.getImageView();
+        grabbingItem.GrabbingItem(player, damageCup);
+
+        // --- item ---
+        Image Itemsheet3 = new Image(App.class.getResourceAsStream("assets/mugs.png"));
+        Image Itemsprite3 = ImageReading.getFrame(Itemsheet3, 1, 5, 32, 32);
+        Item cooldownCup = new Item(2, Itemsprite3, root); // 0 attackDamage 1 health 2 attackSpeed
+        ImageView itemView3 = cooldownCup.getImageView();
+        grabbingItem.GrabbingItem(player, damageCup);
+        grabbingItem.GrabbingItem(player, healCup);
+        grabbingItem.GrabbingItem(player, cooldownCup);
+
         itemView.setFitWidth(50);
         itemView.setPreserveRatio(true);
         root.getChildren().add(itemView);
-        placeEntity(healCup, floorManager.getCenter(), 100, 0);
+        itemView2.setFitWidth(50);
+        itemView2.setPreserveRatio(true);
+        root.getChildren().add(itemView2);
+        itemView3.setFitWidth(50);
+        itemView3.setPreserveRatio(true);
+        root.getChildren().add(itemView3);
+        placeEntity(healCup, floorManager.getCenter(), 100, 100);
+        placeEntity(cooldownCup, floorManager.getCenter(), 300, 100);
+        placeEntity(damageCup, floorManager.getCenter(), 500, 100);
 
         // --- debug ---
         Rectangle playerBox = new Rectangle(player.getWidth(), player.getHeight());
@@ -179,21 +210,23 @@ public class App<T> extends Application {
                 speedText.setText(String.format("Speed = %.1f", movement.getSpeed()));
                 lives.setText(String.format("lives = " + player.getHp()));
 
-                // add map to this
-                // mf
-                if (enemy.isAlive()) {
-                    enemyBox.setWidth(enemy.getWidth() - 20);
-                    enemyBox.setHeight(enemy.getHeight() - 15);
-                    enemyBox.setX(enemy.getX_pos() + 10);
-                    enemyBox.setY(enemy.getY_pos() + 9);
-                    enemyRandomMovement.enemyRandomMovement(enemy, player, activeMap, now);
-                    enemyShooting.enemyShooting(enemy, root, player, movement, activeMap, sprite, enemyProjectiles);
-                } else {
-                    root.getChildren().remove(enemyBox);
-                    enemy.kill();
+                Iterator<Enemy> it = enemies.iterator();
+                while (it.hasNext()) {
+                    Enemy e = it.next();
+                    if (!e.isAlive()) {
+                        it.remove();
+                        continue;
+                    }
+                    enemyBox.setWidth(e.getWidth() - 20);
+                    enemyBox.setHeight(e.getHeight() - 15);
+                    enemyBox.setX(e.getX_pos() + 10);
+                    enemyBox.setY(e.getY_pos() + 9);
+                    enemyRandomMovement.enemyRandomMovement(e, player, activeMap, now);
+                    enemyShooting.enemyShooting(e, root, player, movement, activeMap, sprite, enemyProjectiles);
+                    dealDamage.dealDamage(player, e, playerProjectile, enemyProjectiles, root);
+                    killEntity.killEnemy(e, root);
                 }
 
-                killEntity.killEnemy(enemy, root);
                 killEntity.killPlayer(player, root);
 
                 dealDamage.dealDamage(player, enemy, playerProjectile, enemyProjectiles, root);
@@ -209,11 +242,22 @@ public class App<T> extends Application {
                 }
 
                 if (floorManager.changeRoom(door) != null) {
+
                     canChangeRoom = false;
                     copyTiles(floorManager.getCurrentMap(), activeMap);
                     root.getChildren().set(0, MapRenderer.render(activeMap));
                     placePlayer(player, floorManager.getSpawnPosition(door, player.getWidth(), player.getHeight()));
-                    placeEntity(enemy, floorManager.getCenter(), 0, 0);
+
+                    for (Enemy old : enemies)
+                        old.kill();
+                    enemies.clear();
+
+                    Enemy newEnemy = new Enemy(5, 0, 0, sprite, root);
+                    newEnemy.getImageView().setFitWidth(100);
+                    newEnemy.getImageView().setPreserveRatio(true);
+                    root.getChildren().add(newEnemy.getImageView());
+                    placeEntity(newEnemy, floorManager.getCenter(), r1, r2);
+                    enemies.add(newEnemy);
                 }
             }
         }.start();
